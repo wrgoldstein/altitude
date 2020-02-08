@@ -1,0 +1,20 @@
+[
+	{ 
+		"name": "users",
+		"description": "main users table",
+		"columns": [
+			{ "name": "id", "column_type": "int", "tags": ["first tag", "second tag"]},
+			{ "name": "name", "column_type": "string", "tags": ["great column"]},
+			{ "name": "age", "description": "kind of impolite to ask", "column_type": "int", "tags": []}
+		]
+	},
+	{ 
+		"name": "vehicles",
+		"description": "where we store information on vehicles owned by users",
+		"columns": [
+			{ "name": "id", "column_type": "int", "tags": ["first tag", "second tag"]},
+			{ "name": "make", "column_type": "string", "tags": ["great column"]},
+			{ "name": "model", "column_type": "int", "tags": []}
+		]
+	}
+]
