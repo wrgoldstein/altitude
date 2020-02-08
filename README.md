@@ -1,93 +1,37 @@
-*Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+# Altitude
 
----
+<table>
+    <tr>
+        <th> What is this? </th> 
+        <td> A data dictionary application for searching for available data </td>
+    </tr>
+    <tr>
+        <th> Status </th> 
+        <td> Under development
+    </tr>
+</table>
 
-# svelte app
+### Architecture
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+This application is designed to be as simple as possible. For now, it is [svelte](https://svelte.dev/) on the front end and [flask](https://flask.palletsprojects.com/en/1.1.x/) on the back end. It currently has no database connections, although it will eventually have two (one to store data related to this project and one source connection to get data from Redshift).
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+### Development
 
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
+- Install the javascript dependencies:
+
 ```
-
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-
-## Get started
-
-Install the dependencies...
-
-```bash
-cd svelte-app
 npm install
 ```
 
-...then start [Rollup](https://rollupjs.org):
+- [Install python >= 3.6](https://docs.python-guide.org/starting/installation/)
+- Install [pyenv](https://github.com/pyenv/pyenv) (optional)
 
-```bash
-npm run dev
+```
+pip install flask
 ```
 
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+then to develop in one terminal window run `node_modules/rollup/dist/bin/rollup -c -w` and in another run `FLASK_DEBUG=1 python -m flask run`. This will ensure you have hot reloading set up. Navigate to `localhost:5000`.
 
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
+### Deployment
 
-
-## Building and running in production mode
-
-To create an optimised version of the app:
-
-```bash
-npm run build
-```
-
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
-
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-
-## Deploying to the web
-
-### With [now](https://zeit.co/now)
-
-Install `now` if you haven't already:
-
-```bash
-npm install -g now
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-now deploy --name my-project
-```
-
-As an alternative, use the [Now desktop client](https://zeit.co/download) and simply drag the unzipped project folder to the taskbar icon.
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```
+Not yet determined.

@@ -1,18 +1,25 @@
 <script>
-	import 'bulma/css/bulma.css'
-	export let name;
+	import Layout from "./Layout.svelte"
+	import Table from "./Table.svelte"
+
+	export let table;
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<Layout>
+	<main>
+	{#if table}
+		<Table table_name={table} />
+	{:else}
+		<h1>Hello {table}!</h1>
+	{/if}
+	</main>
+</Layout>
 
 <style>
 	main {
 		text-align: center;
 		padding: 1em;
-		max-width: 240px;
+		max-width: 80vw;
 		margin: 0 auto;
 	}
 
@@ -23,7 +30,7 @@
 		font-weight: 100;
 	}
 
-	@media (min-width: 640px) {
+	@media (max-width: 800px) {
 		main {
 			max-width: none;
 		}

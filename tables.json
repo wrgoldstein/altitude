@@ -1,6 +1,7 @@
 [
 	{ 
-		"name": "users",
+        "name": "users",
+        "schema": "public",
 		"description": "main users table",
 		"columns": [
 			{ "name": "id", "column_type": "int", "tags": ["first tag", "second tag"]},
@@ -9,7 +10,8 @@
 		]
 	},
 	{ 
-		"name": "vehicles",
+        "name": "vehicles",
+        "schema": "public",
 		"description": "where we store information on vehicles owned by users",
 		"columns": [
 			{ "name": "id", "column_type": "int", "tags": ["first tag", "second tag"]},
