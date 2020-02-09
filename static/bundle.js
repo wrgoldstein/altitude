@@ -78,14 +78,31 @@ function text(data) {
 function space() {
     return text(' ');
 }
+function listen(node, event, handler, options) {
+    node.addEventListener(event, handler, options);
+    return () => node.removeEventListener(event, handler, options);
+}
 function attr(node, attribute, value) {
     if (value == null)
         node.removeAttribute(attribute);
     else if (node.getAttribute(attribute) !== value)
         node.setAttribute(attribute, value);
 }
+function set_custom_element_data(node, prop, value) {
+    if (prop in node) {
+        node[prop] = value;
+    }
+    else {
+        attr(node, prop, value);
+    }
+}
 function children(element) {
     return Array.from(element.childNodes);
+}
+function set_input_value(input, value) {
+    if (value != null || input.value) {
+        input.value = value;
+    }
 }
 function custom_event(type, detail) {
     const e = document.createEvent('CustomEvent');
@@ -199,6 +216,8 @@ function transition_out(block, local, detach, callback) {
         block.o(local);
     }
 }
+
+const globals = (typeof window !== 'undefined' ? window : global);
 function create_component(block) {
     block && block.c();
 }
@@ -329,6 +348,19 @@ function detach_dev(node) {
     dispatch_dev("SvelteDOMRemove", { node });
     detach(node);
 }
+function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+    const modifiers = options === true ? ["capture"] : options ? Array.from(Object.keys(options)) : [];
+    if (has_prevent_default)
+        modifiers.push('preventDefault');
+    if (has_stop_propagation)
+        modifiers.push('stopPropagation');
+    dispatch_dev("SvelteDOMAddEventListener", { node, event, handler, modifiers });
+    const dispose = listen(node, event, handler, options);
+    return () => {
+        dispatch_dev("SvelteDOMRemoveEventListener", { node, event, handler, modifiers });
+        dispose();
+    };
+}
 function attr_dev(node, attribute, value) {
     attr(node, attribute, value);
     if (value == null)
@@ -374,35 +406,23 @@ function create_fragment(ctx) {
 	let t3;
 	let span2;
 	let t4;
-	let div7;
-	let div3;
+	let div5;
+	let div1;
 	let a1;
 	let t6;
 	let a2;
 	let t8;
 	let a3;
 	let t10;
-	let div2;
 	let a4;
 	let t12;
-	let div1;
+	let div4;
+	let div3;
+	let div2;
 	let a5;
+	let strong;
 	let t14;
 	let a6;
-	let t16;
-	let a7;
-	let t18;
-	let hr;
-	let t19;
-	let a8;
-	let t21;
-	let div6;
-	let div5;
-	let div4;
-	let a9;
-	let strong;
-	let t23;
-	let a10;
 
 	const block = {
 		c: function create() {
@@ -418,99 +438,76 @@ function create_fragment(ctx) {
 			t3 = space();
 			span2 = element("span");
 			t4 = space();
-			div7 = element("div");
-			div3 = element("div");
+			div5 = element("div");
+			div1 = element("div");
 			a1 = element("a");
 			a1.textContent = "Home";
 			t6 = space();
 			a2 = element("a");
-			a2.textContent = "Search";
+			a2.textContent = "Tables";
 			t8 = space();
 			a3 = element("a");
-			a3.textContent = "Discover";
+			a3.textContent = "Queries";
 			t10 = space();
-			div2 = element("div");
 			a4 = element("a");
-			a4.textContent = "More";
+			a4.textContent = "Settings";
 			t12 = space();
-			div1 = element("div");
-			a5 = element("a");
-			a5.textContent = "About";
-			t14 = space();
-			a6 = element("a");
-			a6.textContent = "Jobs";
-			t16 = space();
-			a7 = element("a");
-			a7.textContent = "Contact";
-			t18 = space();
-			hr = element("hr");
-			t19 = space();
-			a8 = element("a");
-			a8.textContent = "Report an issue";
-			t21 = space();
-			div6 = element("div");
-			div5 = element("div");
 			div4 = element("div");
-			a9 = element("a");
+			div3 = element("div");
+			div2 = element("div");
+			a5 = element("a");
 			strong = element("strong");
 			strong.textContent = "Sign up";
-			t23 = space();
-			a10 = element("a");
-			a10.textContent = "Log in";
-			attr_dev(p, "class", "navbar-item logo svelte-1nfq898");
+			t14 = space();
+			a6 = element("a");
+			a6.textContent = "Log in";
+			attr_dev(p, "class", "navbar-item logo svelte-1dzdl6f");
 			add_location(p, file, 3, 6, 104);
 			attr_dev(span0, "aria-hidden", "true");
-			add_location(span0, file, 7, 6, 278);
+			add_location(span0, file, 7, 6, 287);
 			attr_dev(span1, "aria-hidden", "true");
-			add_location(span1, file, 8, 6, 317);
+			add_location(span1, file, 8, 6, 326);
 			attr_dev(span2, "aria-hidden", "true");
-			add_location(span2, file, 9, 6, 356);
+			add_location(span2, file, 9, 6, 365);
+			attr_dev(a0, "href", "#");
 			attr_dev(a0, "role", "button");
-			attr_dev(a0, "class", "navbar-burger burger");
+			attr_dev(a0, "class", "navbar-burger burger svelte-1dzdl6f");
 			attr_dev(a0, "aria-label", "menu");
 			attr_dev(a0, "aria-expanded", "false");
 			attr_dev(a0, "data-target", "navbarBasicExample");
 			add_location(a0, file, 6, 4, 152);
 			attr_dev(div0, "class", "navbar-brand");
 			add_location(div0, file, 2, 2, 71);
-			attr_dev(a1, "class", "navbar-item");
-			add_location(a1, file, 15, 6, 497);
-			attr_dev(a2, "class", "navbar-item");
-			add_location(a2, file, 19, 6, 552);
-			attr_dev(a3, "class", "navbar-item");
-			add_location(a3, file, 23, 6, 609);
-			attr_dev(a4, "class", "navbar-link");
-			add_location(a4, file, 28, 8, 728);
-			attr_dev(a5, "class", "navbar-item");
-			add_location(a5, file, 33, 10, 829);
-			attr_dev(a6, "class", "navbar-item");
-			add_location(a6, file, 36, 10, 896);
-			attr_dev(a7, "class", "navbar-item");
-			add_location(a7, file, 39, 10, 962);
-			attr_dev(hr, "class", "navbar-divider");
-			add_location(hr, file, 42, 10, 1031);
-			attr_dev(a8, "class", "navbar-item");
-			add_location(a8, file, 43, 10, 1069);
-			attr_dev(div1, "class", "navbar-dropdown");
-			add_location(div1, file, 32, 8, 789);
-			attr_dev(div2, "class", "navbar-item has-dropdown is-hoverable");
-			add_location(div2, file, 27, 6, 668);
-			attr_dev(div3, "class", "navbar-start");
-			add_location(div3, file, 14, 4, 464);
-			add_location(strong, file, 54, 12, 1319);
-			attr_dev(a9, "class", "button is-primary");
-			add_location(a9, file, 53, 10, 1277);
-			attr_dev(a10, "class", "button is-light");
-			add_location(a10, file, 56, 10, 1369);
-			attr_dev(div4, "class", "buttons");
-			add_location(div4, file, 52, 8, 1245);
-			attr_dev(div5, "class", "navbar-item");
-			add_location(div5, file, 51, 6, 1211);
-			attr_dev(div6, "class", "navbar-end");
-			add_location(div6, file, 50, 4, 1180);
-			attr_dev(div7, "id", "navbarBasicExample");
-			attr_dev(div7, "class", "navbar-menu");
-			add_location(div7, file, 13, 2, 410);
+			attr_dev(a1, "href", "/");
+			attr_dev(a1, "class", "navbar-item svelte-1dzdl6f");
+			add_location(a1, file, 15, 6, 506);
+			attr_dev(a2, "href", "/tables");
+			attr_dev(a2, "class", "navbar-item svelte-1dzdl6f");
+			add_location(a2, file, 19, 6, 570);
+			attr_dev(a3, "href", "");
+			attr_dev(a3, "class", "navbar-item svelte-1dzdl6f");
+			add_location(a3, file, 23, 6, 642);
+			attr_dev(a4, "href", "");
+			attr_dev(a4, "class", "navbar-item svelte-1dzdl6f");
+			add_location(a4, file, 27, 6, 708);
+			attr_dev(div1, "class", "navbar-start");
+			add_location(div1, file, 14, 4, 473);
+			add_location(strong, file, 36, 12, 931);
+			attr_dev(a5, "href", "");
+			attr_dev(a5, "class", "button is-primary svelte-1dzdl6f");
+			add_location(a5, file, 35, 10, 881);
+			attr_dev(a6, "href", "");
+			attr_dev(a6, "class", "button is-light svelte-1dzdl6f");
+			add_location(a6, file, 38, 10, 981);
+			attr_dev(div2, "class", "buttons");
+			add_location(div2, file, 34, 8, 849);
+			attr_dev(div3, "class", "navbar-item");
+			add_location(div3, file, 33, 6, 815);
+			attr_dev(div4, "class", "navbar-end");
+			add_location(div4, file, 32, 4, 784);
+			attr_dev(div5, "id", "navbarBasicExample");
+			attr_dev(div5, "class", "navbar-menu");
+			add_location(div5, file, 13, 2, 419);
 			attr_dev(nav, "class", "navbar");
 			attr_dev(nav, "role", "navigation");
 			attr_dev(nav, "aria-label", "main navigation");
@@ -531,35 +528,23 @@ function create_fragment(ctx) {
 			append_dev(a0, t3);
 			append_dev(a0, span2);
 			append_dev(nav, t4);
-			append_dev(nav, div7);
-			append_dev(div7, div3);
-			append_dev(div3, a1);
-			append_dev(div3, t6);
-			append_dev(div3, a2);
-			append_dev(div3, t8);
-			append_dev(div3, a3);
-			append_dev(div3, t10);
-			append_dev(div3, div2);
-			append_dev(div2, a4);
-			append_dev(div2, t12);
-			append_dev(div2, div1);
-			append_dev(div1, a5);
-			append_dev(div1, t14);
-			append_dev(div1, a6);
-			append_dev(div1, t16);
-			append_dev(div1, a7);
-			append_dev(div1, t18);
-			append_dev(div1, hr);
-			append_dev(div1, t19);
-			append_dev(div1, a8);
-			append_dev(div7, t21);
-			append_dev(div7, div6);
-			append_dev(div6, div5);
+			append_dev(nav, div5);
+			append_dev(div5, div1);
+			append_dev(div1, a1);
+			append_dev(div1, t6);
+			append_dev(div1, a2);
+			append_dev(div1, t8);
+			append_dev(div1, a3);
+			append_dev(div1, t10);
+			append_dev(div1, a4);
+			append_dev(div5, t12);
 			append_dev(div5, div4);
-			append_dev(div4, a9);
-			append_dev(a9, strong);
-			append_dev(div4, t23);
-			append_dev(div4, a10);
+			append_dev(div4, div3);
+			append_dev(div3, div2);
+			append_dev(div2, a5);
+			append_dev(a5, strong);
+			append_dev(div2, t14);
+			append_dev(div2, a6);
 		},
 		p: noop,
 		i: noop,
@@ -703,271 +688,138 @@ class Layout extends SvelteComponentDev {
 	}
 }
 
-/* src/Table.svelte generated by Svelte v3.18.1 */
-const file$1 = "src/Table.svelte";
+/* src/components/ColumnModal.svelte generated by Svelte v3.18.1 */
 
-function get_each_context(ctx, list, i) {
-	const child_ctx = ctx.slice();
-	child_ctx[3] = list[i];
-	return child_ctx;
-}
-
-// (35:3) {#each table.columns || [] as column}
-function create_each_block(ctx) {
-	let tr;
-	let td0;
-	let t0_value = /*column*/ ctx[3].name + "";
-	let t0;
-	let t1;
-	let td1;
-	let t2_value = /*column*/ ctx[3].column_type + "";
-	let t2;
-	let t3;
-	let td2;
-
-	let t4_value = (/*column*/ ctx[3].description
-	? /*column*/ ctx[3].description
-	: "--") + "";
-
-	let t4;
-	let t5;
-	let td3;
-	let t6_value = /*column*/ ctx[3].tags + "";
-	let t6;
-	let t7;
-
-	const block = {
-		c: function create() {
-			tr = element("tr");
-			td0 = element("td");
-			t0 = text(t0_value);
-			t1 = space();
-			td1 = element("td");
-			t2 = text(t2_value);
-			t3 = space();
-			td2 = element("td");
-			t4 = text(t4_value);
-			t5 = space();
-			td3 = element("td");
-			t6 = text(t6_value);
-			t7 = space();
-			add_location(td0, file$1, 36, 5, 784);
-			add_location(td1, file$1, 37, 5, 812);
-			add_location(td2, file$1, 38, 5, 847);
-			add_location(td3, file$1, 39, 5, 910);
-			add_location(tr, file$1, 35, 4, 774);
-		},
-		m: function mount(target, anchor) {
-			insert_dev(target, tr, anchor);
-			append_dev(tr, td0);
-			append_dev(td0, t0);
-			append_dev(tr, t1);
-			append_dev(tr, td1);
-			append_dev(td1, t2);
-			append_dev(tr, t3);
-			append_dev(tr, td2);
-			append_dev(td2, t4);
-			append_dev(tr, t5);
-			append_dev(tr, td3);
-			append_dev(td3, t6);
-			append_dev(tr, t7);
-		},
-		p: function update(ctx, dirty) {
-			if (dirty & /*table*/ 1 && t0_value !== (t0_value = /*column*/ ctx[3].name + "")) set_data_dev(t0, t0_value);
-			if (dirty & /*table*/ 1 && t2_value !== (t2_value = /*column*/ ctx[3].column_type + "")) set_data_dev(t2, t2_value);
-
-			if (dirty & /*table*/ 1 && t4_value !== (t4_value = (/*column*/ ctx[3].description
-			? /*column*/ ctx[3].description
-			: "--") + "")) set_data_dev(t4, t4_value);
-
-			if (dirty & /*table*/ 1 && t6_value !== (t6_value = /*column*/ ctx[3].tags + "")) set_data_dev(t6, t6_value);
-		},
-		d: function destroy(detaching) {
-			if (detaching) detach_dev(tr);
-		}
-	};
-
-	dispatch_dev("SvelteRegisterBlock", {
-		block,
-		id: create_each_block.name,
-		type: "each",
-		source: "(35:3) {#each table.columns || [] as column}",
-		ctx
-	});
-
-	return block;
-}
+const { console: console_1 } = globals;
+const file$1 = "src/components/ColumnModal.svelte";
 
 function create_fragment$2(ctx) {
-	let title_value;
+	let div2;
+	let div0;
 	let t0;
-	let div3;
-	let p0;
-	let t1_value = /*table*/ ctx[0].schema + "";
+	let div1;
+	let header;
+	let p;
+	let t1_value = /*table*/ ctx[1].tablename + "";
 	let t1;
 	let t2;
-	let t3_value = /*table*/ ctx[0].name + "";
+	let t3_value = /*column*/ ctx[0].column_name + "";
 	let t3;
 	let t4;
-	let p1;
-	let t5_value = /*table*/ ctx[0].description + "";
+	let button0;
 	let t5;
+	let section;
 	let t6;
-	let div0;
-	let t7;
-	let div1;
-	let table_1;
-	let tr;
-	let th0;
-	let t9;
-	let th1;
-	let t11;
-	let th2;
-	let t13;
-	let th3;
-	let t15;
-	let t16;
-	let div2;
-	document.title = title_value = "Altitude: " + /*table*/ ctx[0].name;
-	let each_value = /*table*/ ctx[0].columns || [];
-	let each_blocks = [];
-
-	for (let i = 0; i < each_value.length; i += 1) {
-		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
-	}
+	let footer;
+	let button1;
+	let t8;
+	let button2;
+	let current;
+	let dispose;
+	const default_slot_template = /*$$slots*/ ctx[7].default;
+	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[6], null);
 
 	const block = {
 		c: function create() {
+			div2 = element("div");
+			div0 = element("div");
 			t0 = space();
-			div3 = element("div");
-			p0 = element("p");
+			div1 = element("div");
+			header = element("header");
+			p = element("p");
 			t1 = text(t1_value);
 			t2 = text(".");
 			t3 = text(t3_value);
 			t4 = space();
-			p1 = element("p");
-			t5 = text(t5_value);
+			button0 = element("button");
+			t5 = space();
+			section = element("section");
+			if (default_slot) default_slot.c();
 			t6 = space();
-			div0 = element("div");
-			t7 = space();
-			div1 = element("div");
-			table_1 = element("table");
-			tr = element("tr");
-			th0 = element("th");
-			th0.textContent = "column name";
-			t9 = space();
-			th1 = element("th");
-			th1.textContent = "column type";
-			t11 = space();
-			th2 = element("th");
-			th2.textContent = "description";
-			t13 = space();
-			th3 = element("th");
-			th3.textContent = "tags";
-			t15 = space();
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].c();
-			}
-
-			t16 = space();
-			div2 = element("div");
-			attr_dev(p0, "class", "panel-heading");
-			add_location(p0, file$1, 22, 1, 457);
-			attr_dev(p1, "class", "panel-block description svelte-7yxo5c");
-			add_location(p1, file$1, 23, 1, 515);
-			attr_dev(div0, "class", "level");
-			add_location(div0, file$1, 25, 1, 576);
-			attr_dev(th0, "class", "svelte-7yxo5c");
-			add_location(th0, file$1, 29, 4, 631);
-			attr_dev(th1, "class", "svelte-7yxo5c");
-			add_location(th1, file$1, 30, 4, 656);
-			attr_dev(th2, "class", "svelte-7yxo5c");
-			add_location(th2, file$1, 31, 4, 681);
-			attr_dev(th3, "class", "svelte-7yxo5c");
-			add_location(th3, file$1, 32, 4, 706);
-			add_location(tr, file$1, 28, 3, 622);
-			attr_dev(table_1, "class", "svelte-7yxo5c");
-			add_location(table_1, file$1, 27, 2, 611);
-			add_location(div1, file$1, 26, 1, 603);
-			attr_dev(div2, "class", "level");
-			add_location(div2, file$1, 44, 1, 974);
-			attr_dev(div3, "class", "panel is-primary");
-			add_location(div3, file$1, 21, 0, 425);
+			footer = element("footer");
+			button1 = element("button");
+			button1.textContent = "Save changes";
+			t8 = space();
+			button2 = element("button");
+			button2.textContent = "Cancel";
+			attr_dev(div0, "class", "modal-background");
+			add_location(div0, file$1, 22, 2, 444);
+			attr_dev(p, "class", "modal-card-title");
+			add_location(p, file$1, 25, 6, 551);
+			attr_dev(button0, "class", "delete");
+			attr_dev(button0, "aria-label", "close");
+			add_location(button0, file$1, 26, 6, 628);
+			attr_dev(header, "class", "modal-card-head");
+			add_location(header, file$1, 24, 4, 512);
+			attr_dev(section, "class", "modal-card-body");
+			add_location(section, file$1, 28, 4, 715);
+			attr_dev(button1, "class", "button is-success");
+			add_location(button1, file$1, 32, 6, 827);
+			attr_dev(button2, "class", "button");
+			add_location(button2, file$1, 33, 6, 905);
+			attr_dev(footer, "class", "modal-card-foot");
+			add_location(footer, file$1, 31, 4, 788);
+			attr_dev(div1, "class", "modal-card");
+			add_location(div1, file$1, 23, 2, 483);
+			attr_dev(div2, "class", "modal is-active");
+			add_location(div2, file$1, 21, 0, 412);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, t0, anchor);
-			insert_dev(target, div3, anchor);
-			append_dev(div3, p0);
-			append_dev(p0, t1);
-			append_dev(p0, t2);
-			append_dev(p0, t3);
-			append_dev(div3, t4);
-			append_dev(div3, p1);
-			append_dev(p1, t5);
-			append_dev(div3, t6);
-			append_dev(div3, div0);
-			append_dev(div3, t7);
-			append_dev(div3, div1);
-			append_dev(div1, table_1);
-			append_dev(table_1, tr);
-			append_dev(tr, th0);
-			append_dev(tr, t9);
-			append_dev(tr, th1);
-			append_dev(tr, t11);
-			append_dev(tr, th2);
-			append_dev(tr, t13);
-			append_dev(tr, th3);
-			append_dev(table_1, t15);
+			insert_dev(target, div2, anchor);
+			append_dev(div2, div0);
+			append_dev(div2, t0);
+			append_dev(div2, div1);
+			append_dev(div1, header);
+			append_dev(header, p);
+			append_dev(p, t1);
+			append_dev(p, t2);
+			append_dev(p, t3);
+			append_dev(header, t4);
+			append_dev(header, button0);
+			append_dev(div1, t5);
+			append_dev(div1, section);
 
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(table_1, null);
+			if (default_slot) {
+				default_slot.m(section, null);
 			}
 
-			append_dev(div3, t16);
-			append_dev(div3, div2);
+			append_dev(div1, t6);
+			append_dev(div1, footer);
+			append_dev(footer, button1);
+			append_dev(footer, t8);
+			append_dev(footer, button2);
+			current = true;
+
+			dispose = [
+				listen_dev(button0, "click", /*close*/ ctx[3], false, false, false),
+				listen_dev(button1, "click", /*save*/ ctx[2], false, false, false),
+				listen_dev(button2, "click", /*close*/ ctx[3], false, false, false)
+			];
 		},
 		p: function update(ctx, [dirty]) {
-			if (dirty & /*table*/ 1 && title_value !== (title_value = "Altitude: " + /*table*/ ctx[0].name)) {
-				document.title = title_value;
-			}
+			if ((!current || dirty & /*table*/ 2) && t1_value !== (t1_value = /*table*/ ctx[1].tablename + "")) set_data_dev(t1, t1_value);
+			if ((!current || dirty & /*column*/ 1) && t3_value !== (t3_value = /*column*/ ctx[0].column_name + "")) set_data_dev(t3, t3_value);
 
-			if (dirty & /*table*/ 1 && t1_value !== (t1_value = /*table*/ ctx[0].schema + "")) set_data_dev(t1, t1_value);
-			if (dirty & /*table*/ 1 && t3_value !== (t3_value = /*table*/ ctx[0].name + "")) set_data_dev(t3, t3_value);
-			if (dirty & /*table*/ 1 && t5_value !== (t5_value = /*table*/ ctx[0].description + "")) set_data_dev(t5, t5_value);
-
-			if (dirty & /*table*/ 1) {
-				each_value = /*table*/ ctx[0].columns || [];
-				let i;
-
-				for (i = 0; i < each_value.length; i += 1) {
-					const child_ctx = get_each_context(ctx, each_value, i);
-
-					if (each_blocks[i]) {
-						each_blocks[i].p(child_ctx, dirty);
-					} else {
-						each_blocks[i] = create_each_block(child_ctx);
-						each_blocks[i].c();
-						each_blocks[i].m(table_1, null);
-					}
-				}
-
-				for (; i < each_blocks.length; i += 1) {
-					each_blocks[i].d(1);
-				}
-
-				each_blocks.length = each_value.length;
+			if (default_slot && default_slot.p && dirty & /*$$scope*/ 64) {
+				default_slot.p(get_slot_context(default_slot_template, ctx, /*$$scope*/ ctx[6], null), get_slot_changes(default_slot_template, /*$$scope*/ ctx[6], dirty, null));
 			}
 		},
-		i: noop,
-		o: noop,
+		i: function intro(local) {
+			if (current) return;
+			transition_in(default_slot, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(default_slot, local);
+			current = false;
+		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(t0);
-			if (detaching) detach_dev(div3);
-			destroy_each(each_blocks, detaching);
+			if (detaching) detach_dev(div2);
+			if (default_slot) default_slot.d(detaching);
+			run_all(dispose);
 		}
 	};
 
@@ -983,48 +835,65 @@ function create_fragment$2(ctx) {
 }
 
 function instance$1($$self, $$props, $$invalidate) {
-	let { table_name } = $$props;
-	let table = {};
+	let { table } = $$props,
+		{ column } = $$props,
+		{ save } = $$props,
+		{ close } = $$props;
 
-	const get_table_metadata = async table_name => {
-		const response = await fetch(`/tables/${table_name}.json`).then(resp => resp.json());
-		$$invalidate(0, table = response);
+	let saved = false;
+	onMount(() => console.log(column));
+
+	document.addEventListener("keydown", event => {
+		if (event.keyCode == 27) {
+			$$invalidate(0, column = undefined);
+		}
+	});
+
+	const this_save = () => {
+		save();
+		saved = true;
+		setTimeout(() => saved = false, 300);
 	};
 
-	onMount(() => {
-		get_table_metadata(table_name);
-	});
-
-	const writable_props = ["table_name"];
+	const writable_props = ["table", "column", "save", "close"];
 
 	Object.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Table> was created with unknown prop '${key}'`);
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<ColumnModal> was created with unknown prop '${key}'`);
 	});
 
+	let { $$slots = {}, $$scope } = $$props;
+
 	$$self.$set = $$props => {
-		if ("table_name" in $$props) $$invalidate(1, table_name = $$props.table_name);
+		if ("table" in $$props) $$invalidate(1, table = $$props.table);
+		if ("column" in $$props) $$invalidate(0, column = $$props.column);
+		if ("save" in $$props) $$invalidate(2, save = $$props.save);
+		if ("close" in $$props) $$invalidate(3, close = $$props.close);
+		if ("$$scope" in $$props) $$invalidate(6, $$scope = $$props.$$scope);
 	};
 
 	$$self.$capture_state = () => {
-		return { table_name, table };
+		return { table, column, save, close, saved };
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("table_name" in $$props) $$invalidate(1, table_name = $$props.table_name);
-		if ("table" in $$props) $$invalidate(0, table = $$props.table);
+		if ("table" in $$props) $$invalidate(1, table = $$props.table);
+		if ("column" in $$props) $$invalidate(0, column = $$props.column);
+		if ("save" in $$props) $$invalidate(2, save = $$props.save);
+		if ("close" in $$props) $$invalidate(3, close = $$props.close);
+		if ("saved" in $$props) saved = $$props.saved;
 	};
 
-	return [table, table_name];
+	return [column, table, save, close, saved, this_save, $$scope, $$slots];
 }
 
-class Table extends SvelteComponentDev {
+class ColumnModal extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$1, create_fragment$2, safe_not_equal, { table_name: 1 });
+		init(this, options, instance$1, create_fragment$2, safe_not_equal, { table: 1, column: 0, save: 2, close: 3 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
-			tagName: "Table",
+			tagName: "ColumnModal",
 			options,
 			id: create_fragment$2.name
 		});
@@ -1032,48 +901,1085 @@ class Table extends SvelteComponentDev {
 		const { ctx } = this.$$;
 		const props = options.props || {};
 
-		if (/*table_name*/ ctx[1] === undefined && !("table_name" in props)) {
-			console.warn("<Table> was created without expected prop 'table_name'");
+		if (/*table*/ ctx[1] === undefined && !("table" in props)) {
+			console_1.warn("<ColumnModal> was created without expected prop 'table'");
+		}
+
+		if (/*column*/ ctx[0] === undefined && !("column" in props)) {
+			console_1.warn("<ColumnModal> was created without expected prop 'column'");
+		}
+
+		if (/*save*/ ctx[2] === undefined && !("save" in props)) {
+			console_1.warn("<ColumnModal> was created without expected prop 'save'");
+		}
+
+		if (/*close*/ ctx[3] === undefined && !("close" in props)) {
+			console_1.warn("<ColumnModal> was created without expected prop 'close'");
 		}
 	}
 
-	get table_name() {
+	get table() {
+		throw new Error("<ColumnModal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set table(value) {
+		throw new Error("<ColumnModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get column() {
+		throw new Error("<ColumnModal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set column(value) {
+		throw new Error("<ColumnModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get save() {
+		throw new Error("<ColumnModal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set save(value) {
+		throw new Error("<ColumnModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get close() {
+		throw new Error("<ColumnModal>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set close(value) {
+		throw new Error("<ColumnModal>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+/* src/Table.svelte generated by Svelte v3.18.1 */
+const file$2 = "src/Table.svelte";
+
+function get_each_context(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[8] = list[i];
+	child_ctx[10] = i;
+	return child_ctx;
+}
+
+// (53:0) {#if modal_column}
+function create_if_block(ctx) {
+	let current;
+
+	const columnmodal = new ColumnModal({
+			props: {
+				table: /*table*/ ctx[0],
+				column: /*modal_column*/ ctx[1],
+				save: /*save*/ ctx[3],
+				close: /*close*/ ctx[4],
+				$$slots: { default: [create_default_slot] },
+				$$scope: { ctx }
+			},
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(columnmodal.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(columnmodal, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const columnmodal_changes = {};
+			if (dirty & /*table*/ 1) columnmodal_changes.table = /*table*/ ctx[0];
+			if (dirty & /*modal_column*/ 2) columnmodal_changes.column = /*modal_column*/ ctx[1];
+
+			if (dirty & /*$$scope, modal_column*/ 2050) {
+				columnmodal_changes.$$scope = { dirty, ctx };
+			}
+
+			columnmodal.$set(columnmodal_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(columnmodal.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(columnmodal.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(columnmodal, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block.name,
+		type: "if",
+		source: "(53:0) {#if modal_column}",
+		ctx
+	});
+
+	return block;
+}
+
+// (54:1) <ColumnModal table={table} column={modal_column} {save} {close}>
+function create_default_slot(ctx) {
+	let div4;
+	let div1;
+	let div0;
+	let p0;
+	let t1;
+	let textarea;
+	let t2;
+	let div3;
+	let div2;
+	let p1;
+	let t4;
+	let p2;
+	let t5_value = /*modal_column*/ ctx[1].tags + "";
+	let t5;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			div4 = element("div");
+			div1 = element("div");
+			div0 = element("div");
+			p0 = element("p");
+			p0.textContent = "description";
+			t1 = space();
+			textarea = element("textarea");
+			t2 = space();
+			div3 = element("div");
+			div2 = element("div");
+			p1 = element("p");
+			p1.textContent = "tags";
+			t4 = space();
+			p2 = element("p");
+			t5 = text(t5_value);
+			attr_dev(p0, "class", "heading");
+			add_location(p0, file$2, 57, 5, 1307);
+			attr_dev(textarea, "class", "textarea svelte-abtnyv");
+			attr_dev(textarea, "placeholder", "e.g. Favorite column ever!");
+			add_location(textarea, file$2, 58, 5, 1347);
+			attr_dev(div0, "class", "level-item has-text-centered column");
+			add_location(div0, file$2, 56, 4, 1252);
+			attr_dev(div1, "class", "column");
+			add_location(div1, file$2, 55, 3, 1227);
+			attr_dev(p1, "class", "heading");
+			add_location(p1, file$2, 63, 5, 1569);
+			attr_dev(p2, "class", "");
+			add_location(p2, file$2, 64, 5, 1602);
+			attr_dev(div2, "class", "level-item has-text-centered column");
+			add_location(div2, file$2, 62, 4, 1514);
+			attr_dev(div3, "class", "column");
+			add_location(div3, file$2, 61, 3, 1489);
+			attr_dev(div4, "class", "level");
+			add_location(div4, file$2, 54, 2, 1204);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div4, anchor);
+			append_dev(div4, div1);
+			append_dev(div1, div0);
+			append_dev(div0, p0);
+			append_dev(div0, t1);
+			append_dev(div0, textarea);
+			set_input_value(textarea, /*modal_column*/ ctx[1].description);
+			append_dev(div4, t2);
+			append_dev(div4, div3);
+			append_dev(div3, div2);
+			append_dev(div2, p1);
+			append_dev(div2, t4);
+			append_dev(div2, p2);
+			append_dev(p2, t5);
+			dispose = listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[7]);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*modal_column*/ 2) {
+				set_input_value(textarea, /*modal_column*/ ctx[1].description);
+			}
+
+			if (dirty & /*modal_column*/ 2 && t5_value !== (t5_value = /*modal_column*/ ctx[1].tags + "")) set_data_dev(t5, t5_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div4);
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_default_slot.name,
+		type: "slot",
+		source: "(54:1) <ColumnModal table={table} column={modal_column} {save} {close}>",
+		ctx
+	});
+
+	return block;
+}
+
+// (88:4) {#each table.columns as column, i}
+function create_each_block(ctx) {
+	let tr;
+	let td0;
+	let t0_value = /*column*/ ctx[8].column_name + "";
+	let t0;
+	let t1;
+	let td1;
+	let t2_value = /*column*/ ctx[8].column_type + "";
+	let t2;
+	let t3;
+	let td2;
+	let div0;
+	let p0;
+	let t5;
+	let p1;
+	let t6_value = /*column*/ ctx[8].description + "";
+	let t6;
+	let t7;
+	let td3;
+	let div1;
+	let p2;
+	let t9;
+	let p3;
+	let t10_value = /*column*/ ctx[8].tags + "";
+	let t10;
+	let t11;
+	let td4;
+	let ion_icon;
+	let t12;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			tr = element("tr");
+			td0 = element("td");
+			t0 = text(t0_value);
+			t1 = space();
+			td1 = element("td");
+			t2 = text(t2_value);
+			t3 = space();
+			td2 = element("td");
+			div0 = element("div");
+			p0 = element("p");
+			p0.textContent = "description";
+			t5 = space();
+			p1 = element("p");
+			t6 = text(t6_value);
+			t7 = space();
+			td3 = element("td");
+			div1 = element("div");
+			p2 = element("p");
+			p2.textContent = "tags";
+			t9 = space();
+			p3 = element("p");
+			t10 = text(t10_value);
+			t11 = space();
+			td4 = element("td");
+			ion_icon = element("ion-icon");
+			t12 = space();
+			attr_dev(td0, "class", "has-text-centered svelte-abtnyv");
+			add_location(td0, file$2, 89, 6, 2242);
+			attr_dev(td1, "class", "has-text-centered svelte-abtnyv");
+			add_location(td1, file$2, 90, 6, 2304);
+			attr_dev(p0, "class", "heading");
+			add_location(p0, file$2, 93, 8, 2462);
+			attr_dev(p1, "class", "");
+			add_location(p1, file$2, 94, 8, 2505);
+			attr_dev(div0, "class", "level-item has-text-centered column");
+			add_location(div0, file$2, 92, 7, 2404);
+			attr_dev(td2, "class", "has-text-centered svelte-abtnyv");
+			add_location(td2, file$2, 91, 6, 2366);
+			attr_dev(p2, "class", "heading");
+			add_location(p2, file$2, 99, 8, 2670);
+			attr_dev(p3, "class", "");
+			add_location(p3, file$2, 100, 8, 2706);
+			attr_dev(div1, "class", "level-item has-text-centered column");
+			add_location(div1, file$2, 98, 7, 2612);
+			attr_dev(td3, "class", "has-text-centered svelte-abtnyv");
+			add_location(td3, file$2, 97, 6, 2574);
+			set_custom_element_data(ion_icon, "name", "ellipsis-horizontal-outline");
+			set_custom_element_data(ion_icon, "class", "icon is-medium");
+			add_location(ion_icon, file$2, 104, 7, 2806);
+			attr_dev(td4, "class", "has-text-centered svelte-abtnyv");
+			add_location(td4, file$2, 103, 6, 2768);
+			attr_dev(tr, "class", "svelte-abtnyv");
+			add_location(tr, file$2, 88, 5, 2231);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, tr, anchor);
+			append_dev(tr, td0);
+			append_dev(td0, t0);
+			append_dev(tr, t1);
+			append_dev(tr, td1);
+			append_dev(td1, t2);
+			append_dev(tr, t3);
+			append_dev(tr, td2);
+			append_dev(td2, div0);
+			append_dev(div0, p0);
+			append_dev(div0, t5);
+			append_dev(div0, p1);
+			append_dev(p1, t6);
+			append_dev(tr, t7);
+			append_dev(tr, td3);
+			append_dev(td3, div1);
+			append_dev(div1, p2);
+			append_dev(div1, t9);
+			append_dev(div1, p3);
+			append_dev(p3, t10);
+			append_dev(tr, t11);
+			append_dev(tr, td4);
+			append_dev(td4, ion_icon);
+			append_dev(tr, t12);
+			dispose = listen_dev(ion_icon, "click", /*pop_modal*/ ctx[2](/*i*/ ctx[10]), false, false, false);
+		},
+		p: function update(new_ctx, dirty) {
+			ctx = new_ctx;
+			if (dirty & /*table*/ 1 && t0_value !== (t0_value = /*column*/ ctx[8].column_name + "")) set_data_dev(t0, t0_value);
+			if (dirty & /*table*/ 1 && t2_value !== (t2_value = /*column*/ ctx[8].column_type + "")) set_data_dev(t2, t2_value);
+			if (dirty & /*table*/ 1 && t6_value !== (t6_value = /*column*/ ctx[8].description + "")) set_data_dev(t6, t6_value);
+			if (dirty & /*table*/ 1 && t10_value !== (t10_value = /*column*/ ctx[8].tags + "")) set_data_dev(t10, t10_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(tr);
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block.name,
+		type: "each",
+		source: "(88:4) {#each table.columns as column, i}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$3(ctx) {
+	let title_value;
+	let t0;
+	let t1;
+	let div2;
+	let p0;
+	let t2_value = /*table*/ ctx[0].schemaname + "";
+	let t2;
+	let t3;
+	let t4_value = /*table*/ ctx[0].tablename + "";
+	let t4;
+	let t5;
+	let p1;
+	let t6_value = (/*table*/ ctx[0].description || "") + "";
+	let t6;
+	let t7;
+	let div0;
+	let t8;
+	let div1;
+	let table_1;
+	let thead;
+	let tr;
+	let th0;
+	let p2;
+	let t10;
+	let th1;
+	let t12;
+	let th2;
+	let t14;
+	let tbody;
+	let current;
+	document.title = title_value = "Altitude: " + /*table*/ ctx[0].name;
+	let if_block = /*modal_column*/ ctx[1] && create_if_block(ctx);
+	let each_value = /*table*/ ctx[0].columns;
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+	}
+
+	const block = {
+		c: function create() {
+			t0 = space();
+			if (if_block) if_block.c();
+			t1 = space();
+			div2 = element("div");
+			p0 = element("p");
+			t2 = text(t2_value);
+			t3 = text(".");
+			t4 = text(t4_value);
+			t5 = space();
+			p1 = element("p");
+			t6 = text(t6_value);
+			t7 = space();
+			div0 = element("div");
+			t8 = space();
+			div1 = element("div");
+			table_1 = element("table");
+			thead = element("thead");
+			tr = element("tr");
+			th0 = element("th");
+			p2 = element("p");
+			p2.textContent = "Column";
+			t10 = space();
+			th1 = element("th");
+			th1.textContent = "Type";
+			t12 = space();
+			th2 = element("th");
+			th2.textContent = "Other information";
+			t14 = space();
+			tbody = element("tbody");
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			attr_dev(p0, "class", "panel-heading");
+			add_location(p0, file$2, 73, 1, 1746);
+			attr_dev(p1, "class", "panel-block description svelte-abtnyv");
+			add_location(p1, file$2, 74, 1, 1813);
+			attr_dev(div0, "class", "level");
+			add_location(div0, file$2, 76, 1, 1880);
+			attr_dev(p2, "class", "subtitle");
+			add_location(p2, file$2, 81, 44, 1987);
+			attr_dev(th0, "class", "subtitle has-text-centered svelte-abtnyv");
+			add_location(th0, file$2, 81, 5, 1948);
+			attr_dev(th1, "class", "subtitle has-text-centered svelte-abtnyv");
+			add_location(th1, file$2, 82, 5, 2028);
+			attr_dev(th2, "class", "subtitle has-text-centered svelte-abtnyv");
+			attr_dev(th2, "colspan", "3");
+			add_location(th2, file$2, 83, 5, 2082);
+			attr_dev(tr, "class", "svelte-abtnyv");
+			add_location(tr, file$2, 80, 4, 1938);
+			add_location(thead, file$2, 79, 3, 1926);
+			add_location(tbody, file$2, 86, 3, 2179);
+			attr_dev(table_1, "class", "svelte-abtnyv");
+			add_location(table_1, file$2, 78, 2, 1915);
+			add_location(div1, file$2, 77, 1, 1907);
+			attr_dev(div2, "class", "panel is-primary");
+			add_location(div2, file$2, 72, 0, 1714);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t0, anchor);
+			if (if_block) if_block.m(target, anchor);
+			insert_dev(target, t1, anchor);
+			insert_dev(target, div2, anchor);
+			append_dev(div2, p0);
+			append_dev(p0, t2);
+			append_dev(p0, t3);
+			append_dev(p0, t4);
+			append_dev(div2, t5);
+			append_dev(div2, p1);
+			append_dev(p1, t6);
+			append_dev(div2, t7);
+			append_dev(div2, div0);
+			append_dev(div2, t8);
+			append_dev(div2, div1);
+			append_dev(div1, table_1);
+			append_dev(table_1, thead);
+			append_dev(thead, tr);
+			append_dev(tr, th0);
+			append_dev(th0, p2);
+			append_dev(tr, t10);
+			append_dev(tr, th1);
+			append_dev(tr, t12);
+			append_dev(tr, th2);
+			append_dev(table_1, t14);
+			append_dev(table_1, tbody);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(tbody, null);
+			}
+
+			current = true;
+		},
+		p: function update(ctx, [dirty]) {
+			if ((!current || dirty & /*table*/ 1) && title_value !== (title_value = "Altitude: " + /*table*/ ctx[0].name)) {
+				document.title = title_value;
+			}
+
+			if (/*modal_column*/ ctx[1]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+					transition_in(if_block, 1);
+				} else {
+					if_block = create_if_block(ctx);
+					if_block.c();
+					transition_in(if_block, 1);
+					if_block.m(t1.parentNode, t1);
+				}
+			} else if (if_block) {
+				group_outros();
+
+				transition_out(if_block, 1, 1, () => {
+					if_block = null;
+				});
+
+				check_outros();
+			}
+
+			if ((!current || dirty & /*table*/ 1) && t2_value !== (t2_value = /*table*/ ctx[0].schemaname + "")) set_data_dev(t2, t2_value);
+			if ((!current || dirty & /*table*/ 1) && t4_value !== (t4_value = /*table*/ ctx[0].tablename + "")) set_data_dev(t4, t4_value);
+			if ((!current || dirty & /*table*/ 1) && t6_value !== (t6_value = (/*table*/ ctx[0].description || "") + "")) set_data_dev(t6, t6_value);
+
+			if (dirty & /*pop_modal, table*/ 5) {
+				each_value = /*table*/ ctx[0].columns;
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+					} else {
+						each_blocks[i] = create_each_block(child_ctx);
+						each_blocks[i].c();
+						each_blocks[i].m(tbody, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].d(1);
+				}
+
+				each_blocks.length = each_value.length;
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(if_block);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(if_block);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t0);
+			if (if_block) if_block.d(detaching);
+			if (detaching) detach_dev(t1);
+			if (detaching) detach_dev(div2);
+			destroy_each(each_blocks, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$3.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$2($$self, $$props, $$invalidate) {
+	let { table_id } = $$props;
+	let table = { columns: [] };
+	let modal_column;
+
+	const get_table_metadata = async table_id => {
+		const response = await fetch(`/tables/${table_id}.json`).then(resp => resp.json());
+		$$invalidate(0, table = response);
+	};
+
+	function pop_modal(i) {
+		return () => {
+			$$invalidate(1, modal_column = table.columns[i]);
+		};
+	}
+
+	onMount(() => {
+		get_table_metadata(table_id);
+	});
+
+	let save = () => {
+		if (modal_column) {
+			// somewhat roundabout because we need to mutate
+			// the original page as well as the modal content
+			table.columns.forEach(column => {
+				if (column.column_name == modal_column.column_name) {
+					column.description = modal_column.description;
+				}
+			});
+
+			fetch(`/tables/${table.schemaname}.${table.tablename}`, {
+				method: "POST",
+				body: JSON.stringify({ table })
+			}).then(() => $$invalidate(0, table));
+		}
+	};
+
+	let close = () => $$invalidate(1, modal_column = undefined);
+	const writable_props = ["table_id"];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Table> was created with unknown prop '${key}'`);
+	});
+
+	function textarea_input_handler() {
+		modal_column.description = this.value;
+		$$invalidate(1, modal_column);
+	}
+
+	$$self.$set = $$props => {
+		if ("table_id" in $$props) $$invalidate(5, table_id = $$props.table_id);
+	};
+
+	$$self.$capture_state = () => {
+		return {
+			table_id,
+			table,
+			modal_column,
+			save,
+			close
+		};
+	};
+
+	$$self.$inject_state = $$props => {
+		if ("table_id" in $$props) $$invalidate(5, table_id = $$props.table_id);
+		if ("table" in $$props) $$invalidate(0, table = $$props.table);
+		if ("modal_column" in $$props) $$invalidate(1, modal_column = $$props.modal_column);
+		if ("save" in $$props) $$invalidate(3, save = $$props.save);
+		if ("close" in $$props) $$invalidate(4, close = $$props.close);
+	};
+
+	return [
+		table,
+		modal_column,
+		pop_modal,
+		save,
+		close,
+		table_id,
+		get_table_metadata,
+		textarea_input_handler
+	];
+}
+
+class Table extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$2, create_fragment$3, safe_not_equal, { table_id: 5 });
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Table",
+			options,
+			id: create_fragment$3.name
+		});
+
+		const { ctx } = this.$$;
+		const props = options.props || {};
+
+		if (/*table_id*/ ctx[5] === undefined && !("table_id" in props)) {
+			console.warn("<Table> was created without expected prop 'table_id'");
+		}
+	}
+
+	get table_id() {
 		throw new Error("<Table>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	set table_name(value) {
+	set table_id(value) {
 		throw new Error("<Table>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }
 
-/* src/App.svelte generated by Svelte v3.18.1 */
-const file$2 = "src/App.svelte";
+/* src/Tables.svelte generated by Svelte v3.18.1 */
+const file$3 = "src/Tables.svelte";
 
-// (12:1) {:else}
+function get_each_context$1(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[2] = list[i];
+	return child_ctx;
+}
+
+// (35:8) {#each tables as table}
+function create_each_block$1(ctx) {
+	let a;
+	let div0;
+	let p0;
+	let t1;
+	let p1;
+	let t2_value = /*table*/ ctx[2].schemaname + "";
+	let t2;
+	let t3;
+	let t4_value = /*table*/ ctx[2].tablename + "";
+	let t4;
+	let t5;
+	let div1;
+	let p2;
+	let t7;
+	let p3;
+	let t8_value = /*table*/ ctx[2].columns.length + "";
+	let t8;
+	let t9;
+	let div2;
+	let p4;
+	let t11;
+	let p5;
+	let t12_value = (/*table*/ ctx[2].description || "None") + "";
+	let t12;
+	let t13;
+	let div3;
+	let p6;
+	let t15;
+	let p7;
+	let t16_value = (/*table*/ ctx[2].tags || "None") + "";
+	let t16;
+	let t17;
+	let div4;
+	let p8;
+	let t19;
+	let p9;
+	let t20_value = (/*table*/ ctx[2].last_used || "N/A") + "";
+	let t20;
+	let t21;
+	let a_href_value;
+
+	const block = {
+		c: function create() {
+			a = element("a");
+			div0 = element("div");
+			p0 = element("p");
+			p0.textContent = "table";
+			t1 = space();
+			p1 = element("p");
+			t2 = text(t2_value);
+			t3 = text(".");
+			t4 = text(t4_value);
+			t5 = space();
+			div1 = element("div");
+			p2 = element("p");
+			p2.textContent = "columns";
+			t7 = space();
+			p3 = element("p");
+			t8 = text(t8_value);
+			t9 = space();
+			div2 = element("div");
+			p4 = element("p");
+			p4.textContent = "description";
+			t11 = space();
+			p5 = element("p");
+			t12 = text(t12_value);
+			t13 = space();
+			div3 = element("div");
+			p6 = element("p");
+			p6.textContent = "tags";
+			t15 = space();
+			p7 = element("p");
+			t16 = text(t16_value);
+			t17 = space();
+			div4 = element("div");
+			p8 = element("p");
+			p8.textContent = "last_used";
+			t19 = space();
+			p9 = element("p");
+			t20 = text(t20_value);
+			t21 = space();
+			attr_dev(p0, "class", "heading");
+			add_location(p0, file$3, 37, 20, 1065);
+			attr_dev(p1, "class", "subtitle");
+			add_location(p1, file$3, 38, 20, 1114);
+			attr_dev(div0, "class", "level-item has-text-centered column");
+			add_location(div0, file$3, 36, 16, 995);
+			attr_dev(p2, "class", "heading");
+			add_location(p2, file$3, 41, 20, 1284);
+			attr_dev(p3, "class", "subtitle");
+			add_location(p3, file$3, 42, 20, 1335);
+			attr_dev(div1, "class", "level-item has-text-centered column");
+			add_location(div1, file$3, 40, 16, 1214);
+			attr_dev(p4, "class", "heading");
+			add_location(p4, file$3, 45, 20, 1491);
+			attr_dev(p5, "class", "subtitle");
+			add_location(p5, file$3, 46, 20, 1546);
+			attr_dev(div2, "class", "level-item has-text-centered column");
+			add_location(div2, file$3, 44, 16, 1421);
+			attr_dev(p6, "class", "heading");
+			add_location(p6, file$3, 49, 20, 1709);
+			attr_dev(p7, "class", "subtitle");
+			add_location(p7, file$3, 50, 20, 1757);
+			attr_dev(div3, "class", "level-item has-text-centered column");
+			add_location(div3, file$3, 48, 16, 1639);
+			attr_dev(p8, "class", "heading");
+			add_location(p8, file$3, 53, 20, 1913);
+			attr_dev(p9, "class", "subtitle");
+			add_location(p9, file$3, 54, 20, 1966);
+			attr_dev(div4, "class", "level-item has-text-centered column");
+			add_location(div4, file$3, 52, 16, 1843);
+			attr_dev(a, "href", a_href_value = "/tables/" + /*table*/ ctx[2].schemaname + "." + /*table*/ ctx[2].tablename);
+			attr_dev(a, "class", "level table svelte-12dzaya");
+			add_location(a, file$3, 35, 12, 903);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, a, anchor);
+			append_dev(a, div0);
+			append_dev(div0, p0);
+			append_dev(div0, t1);
+			append_dev(div0, p1);
+			append_dev(p1, t2);
+			append_dev(p1, t3);
+			append_dev(p1, t4);
+			append_dev(a, t5);
+			append_dev(a, div1);
+			append_dev(div1, p2);
+			append_dev(div1, t7);
+			append_dev(div1, p3);
+			append_dev(p3, t8);
+			append_dev(a, t9);
+			append_dev(a, div2);
+			append_dev(div2, p4);
+			append_dev(div2, t11);
+			append_dev(div2, p5);
+			append_dev(p5, t12);
+			append_dev(a, t13);
+			append_dev(a, div3);
+			append_dev(div3, p6);
+			append_dev(div3, t15);
+			append_dev(div3, p7);
+			append_dev(p7, t16);
+			append_dev(a, t17);
+			append_dev(a, div4);
+			append_dev(div4, p8);
+			append_dev(div4, t19);
+			append_dev(div4, p9);
+			append_dev(p9, t20);
+			append_dev(a, t21);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*tables*/ 1 && t2_value !== (t2_value = /*table*/ ctx[2].schemaname + "")) set_data_dev(t2, t2_value);
+			if (dirty & /*tables*/ 1 && t4_value !== (t4_value = /*table*/ ctx[2].tablename + "")) set_data_dev(t4, t4_value);
+			if (dirty & /*tables*/ 1 && t8_value !== (t8_value = /*table*/ ctx[2].columns.length + "")) set_data_dev(t8, t8_value);
+			if (dirty & /*tables*/ 1 && t12_value !== (t12_value = (/*table*/ ctx[2].description || "None") + "")) set_data_dev(t12, t12_value);
+			if (dirty & /*tables*/ 1 && t16_value !== (t16_value = (/*table*/ ctx[2].tags || "None") + "")) set_data_dev(t16, t16_value);
+			if (dirty & /*tables*/ 1 && t20_value !== (t20_value = (/*table*/ ctx[2].last_used || "N/A") + "")) set_data_dev(t20, t20_value);
+
+			if (dirty & /*tables*/ 1 && a_href_value !== (a_href_value = "/tables/" + /*table*/ ctx[2].schemaname + "." + /*table*/ ctx[2].tablename)) {
+				attr_dev(a, "href", a_href_value);
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(a);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block$1.name,
+		type: "each",
+		source: "(35:8) {#each tables as table}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$4(ctx) {
+	let t0;
+	let div4;
+	let p0;
+	let t2;
+	let div0;
+	let p1;
+	let input;
+	let t3;
+	let span;
+	let i;
+	let t4;
+	let div1;
+	let h3;
+	let t6;
+	let div2;
+	let t7;
+	let div3;
+	let each_value = /*tables*/ ctx[0];
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+	}
+
+	const block = {
+		c: function create() {
+			t0 = space();
+			div4 = element("div");
+			p0 = element("p");
+			p0.textContent = "Tables";
+			t2 = space();
+			div0 = element("div");
+			p1 = element("p");
+			input = element("input");
+			t3 = space();
+			span = element("span");
+			i = element("i");
+			t4 = space();
+			div1 = element("div");
+			h3 = element("h3");
+			h3.textContent = "Most popular tables matching your search";
+			t6 = space();
+			div2 = element("div");
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			t7 = space();
+			div3 = element("div");
+			document.title = "Altitude: Discover";
+			attr_dev(p0, "class", "panel-heading");
+			add_location(p0, file$3, 21, 1, 412);
+			attr_dev(input, "class", "input");
+			attr_dev(input, "type", "text");
+			attr_dev(input, "placeholder", "Search");
+			add_location(input, file$3, 24, 8, 529);
+			attr_dev(i, "class", "fas fa-search");
+			attr_dev(i, "aria-hidden", "true");
+			add_location(i, file$3, 26, 12, 632);
+			attr_dev(span, "class", "icon is-left");
+			add_location(span, file$3, 25, 8, 592);
+			attr_dev(p1, "class", "control has-icons-left");
+			add_location(p1, file$3, 23, 8, 486);
+			attr_dev(div0, "class", "panel-block");
+			add_location(div0, file$3, 22, 4, 452);
+			add_location(h3, file$3, 31, 8, 771);
+			attr_dev(div1, "class", "panel-block description svelte-12dzaya");
+			add_location(div1, file$3, 30, 4, 725);
+			attr_dev(div2, "class", "full-height");
+			add_location(div2, file$3, 33, 1, 833);
+			attr_dev(div3, "class", "level");
+			add_location(div3, file$3, 59, 1, 2082);
+			attr_dev(div4, "class", "panel svelte-12dzaya");
+			add_location(div4, file$3, 20, 0, 391);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t0, anchor);
+			insert_dev(target, div4, anchor);
+			append_dev(div4, p0);
+			append_dev(div4, t2);
+			append_dev(div4, div0);
+			append_dev(div0, p1);
+			append_dev(p1, input);
+			append_dev(p1, t3);
+			append_dev(p1, span);
+			append_dev(span, i);
+			append_dev(div4, t4);
+			append_dev(div4, div1);
+			append_dev(div1, h3);
+			append_dev(div4, t6);
+			append_dev(div4, div2);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(div2, null);
+			}
+
+			append_dev(div4, t7);
+			append_dev(div4, div3);
+		},
+		p: function update(ctx, [dirty]) {
+			if (dirty & /*tables*/ 1) {
+				each_value = /*tables*/ ctx[0];
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+					} else {
+						each_blocks[i] = create_each_block$1(child_ctx);
+						each_blocks[i].c();
+						each_blocks[i].m(div2, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].d(1);
+				}
+
+				each_blocks.length = each_value.length;
+			}
+		},
+		i: noop,
+		o: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t0);
+			if (detaching) detach_dev(div4);
+			destroy_each(each_blocks, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$4.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$3($$self, $$props, $$invalidate) {
+	let tables = [];
+
+	const get_tables_metadata = async () => {
+		const response = await fetch(`/tables.json`).then(resp => resp.json());
+		$$invalidate(0, tables = response);
+		console.log(tables);
+	};
+
+	onMount(() => {
+		get_tables_metadata();
+	});
+
+	$$self.$capture_state = () => {
+		return {};
+	};
+
+	$$self.$inject_state = $$props => {
+		if ("tables" in $$props) $$invalidate(0, tables = $$props.tables);
+	};
+
+	return [tables];
+}
+
+class Tables extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+		init(this, options, instance$3, create_fragment$4, safe_not_equal, {});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Tables",
+			options,
+			id: create_fragment$4.name
+		});
+	}
+}
+
+/* src/App.svelte generated by Svelte v3.18.1 */
+const file$4 = "src/App.svelte";
+
+// (15:1) {:else}
 function create_else_block(ctx) {
 	let h1;
-	let t0;
-	let t1;
-	let t2;
 
 	const block = {
 		c: function create() {
 			h1 = element("h1");
-			t0 = text("Hello ");
-			t1 = text(/*table*/ ctx[0]);
-			t2 = text("!");
-			attr_dev(h1, "class", "svelte-1t2rlhk");
-			add_location(h1, file$2, 12, 2, 186);
+			h1.textContent = "Hello! Try navigating to discover available data!";
+			attr_dev(h1, "class", "svelte-4iepu8");
+			add_location(h1, file$4, 15, 2, 274);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, h1, anchor);
-			append_dev(h1, t0);
-			append_dev(h1, t1);
-			append_dev(h1, t2);
 		},
-		p: function update(ctx, dirty) {
-			if (dirty & /*table*/ 1) set_data_dev(t1, /*table*/ ctx[0]);
-		},
+		p: noop,
 		i: noop,
 		o: noop,
 		d: function destroy(detaching) {
@@ -1085,72 +1991,112 @@ function create_else_block(ctx) {
 		block,
 		id: create_else_block.name,
 		type: "else",
-		source: "(12:1) {:else}",
+		source: "(15:1) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (10:1) {#if table}
-function create_if_block(ctx) {
+// (13:27) 
+function create_if_block_1(ctx) {
 	let current;
-
-	const table_1 = new Table({
-			props: { table_name: /*table*/ ctx[0] },
-			$$inline: true
-		});
+	const tables = new Tables({ $$inline: true });
 
 	const block = {
 		c: function create() {
-			create_component(table_1.$$.fragment);
+			create_component(tables.$$.fragment);
 		},
 		m: function mount(target, anchor) {
-			mount_component(table_1, target, anchor);
+			mount_component(tables, target, anchor);
 			current = true;
 		},
-		p: function update(ctx, dirty) {
-			const table_1_changes = {};
-			if (dirty & /*table*/ 1) table_1_changes.table_name = /*table*/ ctx[0];
-			table_1.$set(table_1_changes);
-		},
+		p: noop,
 		i: function intro(local) {
 			if (current) return;
-			transition_in(table_1.$$.fragment, local);
+			transition_in(tables.$$.fragment, local);
 			current = true;
 		},
 		o: function outro(local) {
-			transition_out(table_1.$$.fragment, local);
+			transition_out(tables.$$.fragment, local);
 			current = false;
 		},
 		d: function destroy(detaching) {
-			destroy_component(table_1, detaching);
+			destroy_component(tables, detaching);
 		}
 	};
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block.name,
+		id: create_if_block_1.name,
 		type: "if",
-		source: "(10:1) {#if table}",
+		source: "(13:27) ",
 		ctx
 	});
 
 	return block;
 }
 
-// (8:0) <Layout>
-function create_default_slot(ctx) {
+// (11:1) {#if sel == "table"}
+function create_if_block$1(ctx) {
+	let current;
+
+	const table = new Table({
+			props: { table_id: /*table_id*/ ctx[1] },
+			$$inline: true
+		});
+
+	const block = {
+		c: function create() {
+			create_component(table.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(table, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const table_changes = {};
+			if (dirty & /*table_id*/ 2) table_changes.table_id = /*table_id*/ ctx[1];
+			table.$set(table_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(table.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(table.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(table, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$1.name,
+		type: "if",
+		source: "(11:1) {#if sel == \\\"table\\\"}",
+		ctx
+	});
+
+	return block;
+}
+
+// (9:0) <Layout>
+function create_default_slot$1(ctx) {
 	let main;
 	let current_block_type_index;
 	let if_block;
 	let current;
-	const if_block_creators = [create_if_block, create_else_block];
+	const if_block_creators = [create_if_block$1, create_if_block_1, create_else_block];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (/*table*/ ctx[0]) return 0;
-		return 1;
+		if (/*sel*/ ctx[0] == "table") return 0;
+		if (/*sel*/ ctx[0] == "tables") return 1;
+		return 2;
 	}
 
 	current_block_type_index = select_block_type(ctx);
@@ -1160,8 +2106,8 @@ function create_default_slot(ctx) {
 		c: function create() {
 			main = element("main");
 			if_block.c();
-			attr_dev(main, "class", "svelte-1t2rlhk");
-			add_location(main, file$2, 8, 1, 124);
+			attr_dev(main, "class", "svelte-4iepu8");
+			add_location(main, file$4, 9, 1, 170);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, main, anchor);
@@ -1210,21 +2156,21 @@ function create_default_slot(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_default_slot.name,
+		id: create_default_slot$1.name,
 		type: "slot",
-		source: "(8:0) <Layout>",
+		source: "(9:0) <Layout>",
 		ctx
 	});
 
 	return block;
 }
 
-function create_fragment$3(ctx) {
+function create_fragment$5(ctx) {
 	let current;
 
 	const layout = new Layout({
 			props: {
-				$$slots: { default: [create_default_slot] },
+				$$slots: { default: [create_default_slot$1] },
 				$$scope: { ctx }
 			},
 			$$inline: true
@@ -1244,7 +2190,7 @@ function create_fragment$3(ctx) {
 		p: function update(ctx, [dirty]) {
 			const layout_changes = {};
 
-			if (dirty & /*$$scope, table*/ 3) {
+			if (dirty & /*$$scope, table_id, sel*/ 7) {
 				layout_changes.$$scope = { dirty, ctx };
 			}
 
@@ -1266,7 +2212,7 @@ function create_fragment$3(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_fragment$3.name,
+		id: create_fragment$5.name,
 		type: "component",
 		source: "",
 		ctx
@@ -1275,54 +2221,68 @@ function create_fragment$3(ctx) {
 	return block;
 }
 
-function instance$2($$self, $$props, $$invalidate) {
-	let { table } = $$props;
-	const writable_props = ["table"];
+function instance$4($$self, $$props, $$invalidate) {
+	let { sel } = $$props, { table_id } = $$props;
+	const writable_props = ["sel", "table_id"];
 
 	Object.keys($$props).forEach(key => {
 		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<App> was created with unknown prop '${key}'`);
 	});
 
 	$$self.$set = $$props => {
-		if ("table" in $$props) $$invalidate(0, table = $$props.table);
+		if ("sel" in $$props) $$invalidate(0, sel = $$props.sel);
+		if ("table_id" in $$props) $$invalidate(1, table_id = $$props.table_id);
 	};
 
 	$$self.$capture_state = () => {
-		return { table };
+		return { sel, table_id };
 	};
 
 	$$self.$inject_state = $$props => {
-		if ("table" in $$props) $$invalidate(0, table = $$props.table);
+		if ("sel" in $$props) $$invalidate(0, sel = $$props.sel);
+		if ("table_id" in $$props) $$invalidate(1, table_id = $$props.table_id);
 	};
 
-	return [table];
+	return [sel, table_id];
 }
 
 class App extends SvelteComponentDev {
 	constructor(options) {
 		super(options);
-		init(this, options, instance$2, create_fragment$3, safe_not_equal, { table: 0 });
+		init(this, options, instance$4, create_fragment$5, safe_not_equal, { sel: 0, table_id: 1 });
 
 		dispatch_dev("SvelteRegisterComponent", {
 			component: this,
 			tagName: "App",
 			options,
-			id: create_fragment$3.name
+			id: create_fragment$5.name
 		});
 
 		const { ctx } = this.$$;
 		const props = options.props || {};
 
-		if (/*table*/ ctx[0] === undefined && !("table" in props)) {
-			console.warn("<App> was created without expected prop 'table'");
+		if (/*sel*/ ctx[0] === undefined && !("sel" in props)) {
+			console.warn("<App> was created without expected prop 'sel'");
+		}
+
+		if (/*table_id*/ ctx[1] === undefined && !("table_id" in props)) {
+			console.warn("<App> was created without expected prop 'table_id'");
 		}
 	}
 
-	get table() {
+	get sel() {
 		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
-	set table(value) {
+	set sel(value) {
+		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get table_id() {
+		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set table_id(value) {
 		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 }

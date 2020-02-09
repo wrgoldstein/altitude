@@ -2,32 +2,38 @@ import json
 from flask import jsonify 
 from flask import Flask
 from flask import render_template
+from flask import request
+
+from es import es_search
 
 app = Flask(__name__)
 
-# ===== Pages ======
+# ===== Templates ======
 
 @app.route('/')
 def hello_world():
     return render_template('index.html')
 
-@app.route('/tables/<table>')
-def get_table(table=None):
-    return render_template('index.html', table=table)
+@app.route('/tables')
+def get_tables():
+    return render_template('index.html', sel='tables')
 
-# ===== JSON API =====
+@app.route('/tables/<table_id>', methods=['GET'])
+def get_table(table_id=None):
+    return render_template('index.html', sel='table', table_id=table_id)
 
-@app.route('/tables/<table>.json')
-def get_table_json(table):
-    #TODO replace this with a database
-    try:
-        tables = json.load(open('tables.json', 'r'))
-        table = next(filter(lambda t: t['name'] == table, tables))
-        return jsonify(table)
-    except StopIteration:
-        return
+# ======== API ========
+
+@app.route('/tables/<table_id>.json')
+def get_table_json(table_id):
+    return jsonify(es_search.get_table_by_id(table_id))
 
 @app.route('/tables.json')
 def get_tables_json():
-    return jsonify(json.load(open('tables.json', 'r')))
+    # return jsonify(json.load(open('tables.json', 'r')))
+    return jsonify(es_search.get_tables())
 
+@app.route('/tables/<table_id>', methods=['POST'])
+def update_table(table_id):
+    es_search.update_table_by_id(table_id, json.loads(request.data)['table'])
+    return 'ok'  #TODO actually check its ok

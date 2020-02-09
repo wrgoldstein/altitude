@@ -1,16 +1,19 @@
 <script>
 	import Layout from "./Layout.svelte"
 	import Table from "./Table.svelte"
+	import Tables from "./Tables.svelte"
 
-	export let table;
+	export let sel, table_id;
 </script>
 
 <Layout>
 	<main>
-	{#if table}
-		<Table table_name={table} />
+	{#if sel == "table"}
+		<Table {table_id} />
+	{:else if sel == "tables"}
+		<Tables />
 	{:else}
-		<h1>Hello {table}!</h1>
+		<h1>Hello! Try navigating to discover available data!</h1>
 	{/if}
 	</main>
 </Layout>
@@ -21,6 +24,7 @@
 		padding: 1em;
 		max-width: 80vw;
 		margin: 0 auto;
+		height: 90%;
 	}
 
 	h1 {

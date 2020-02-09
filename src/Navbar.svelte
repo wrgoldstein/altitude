@@ -4,7 +4,7 @@
       <p class="navbar-item logo">logo corp</p>
 
 
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+    <a href="#" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -13,48 +13,30 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item">
+      <a href="/" class="navbar-item">
         Home
       </a>
 
-      <a class="navbar-item">
-        Search
+      <a href="/tables" class="navbar-item">
+        Tables
       </a>
 
-      <a class="navbar-item">
-        Discover
+      <a href="" class="navbar-item">
+        Queries
       </a>
 
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More
-        </a>
-
-        <div class="navbar-dropdown">
-          <a class="navbar-item">
-            About
-          </a>
-          <a class="navbar-item">
-            Jobs
-          </a>
-          <a class="navbar-item">
-            Contact
-          </a>
-          <hr class="navbar-divider">
-          <a class="navbar-item">
-            Report an issue
-          </a>
-        </div>
-      </div>
+      <a href="" class="navbar-item">
+        Settings
+      </a>
     </div>
 
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
+          <a href="" class="button is-primary">
             <strong>Sign up</strong>
           </a>
-          <a class="button is-light">
+          <a href="" class="button is-light">
             Log in
           </a>
         </div>
@@ -65,6 +47,11 @@
 
 <style>
 .logo {
-  text-transform: uppercase
+  text-transform: uppercase;
+  color: #FF8D8A;
+}
+
+a {
+  text-decoration: none;
 }
 </style>
