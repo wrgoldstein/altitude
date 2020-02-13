@@ -18,3 +18,9 @@ TODO
 - [ ] Design a homepage. Liked tables, recently used tables
 - [ ] Search -- metadata needs to be searchable. Add search page, that links out to Table component page.
 - [ ] Find some good sample data to toss into a postgres instance as a test
+- [ ] Use `moz-sql-parser` to provide a way to index:
+    * How many times in the last 7 days a given table has been queried
+    * Which tables are most frequently co-queried with that table
+- [ ] Clean up design of tables view and columns view
+- [ ] Add functionality for editing description and tags of tables, and tags of columns
+- [ ] Security audit

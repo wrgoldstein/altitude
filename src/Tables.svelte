@@ -6,7 +6,6 @@
     const get_tables_metadata = async () => {
         const response = await fetch(`/tables.json`).then(resp => resp.json())
         tables = response
-        console.log(tables)
     }
 
     onMount(() => {
@@ -40,7 +39,7 @@
                 </div>
                 <div class="level-item has-text-centered column">
                     <p class="heading">columns</p>
-                    <p class="subtitle">{table.columns.length}</p>
+                    <p class="subtitle">{table.columns && table.columns.length}</p>
                 </div>
                 <div class="level-item has-text-centered column">
                     <p class="heading">description</p>

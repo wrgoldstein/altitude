@@ -756,7 +756,7 @@ function create_fragment$2(ctx) {
 			attr_dev(button1, "class", "button is-success");
 			add_location(button1, file$1, 32, 6, 827);
 			attr_dev(button2, "class", "button");
-			add_location(button2, file$1, 33, 6, 905);
+			add_location(button2, file$1, 35, 6, 921);
 			attr_dev(footer, "class", "modal-card-foot");
 			add_location(footer, file$1, 31, 4, 788);
 			attr_dev(div1, "class", "modal-card");
@@ -1596,7 +1596,7 @@ function get_each_context$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (35:8) {#each tables as table}
+// (34:8) {#each tables as table}
 function create_each_block$1(ctx) {
 	let a;
 	let div0;
@@ -1613,7 +1613,7 @@ function create_each_block$1(ctx) {
 	let p2;
 	let t7;
 	let p3;
-	let t8_value = /*table*/ ctx[2].columns.length + "";
+	let t8_value = (/*table*/ ctx[2].columns && /*table*/ ctx[2].columns.length) + "";
 	let t8;
 	let t9;
 	let div2;
@@ -1680,38 +1680,38 @@ function create_each_block$1(ctx) {
 			t20 = text(t20_value);
 			t21 = space();
 			attr_dev(p0, "class", "heading");
-			add_location(p0, file$3, 37, 20, 1065);
+			add_location(p0, file$3, 36, 20, 1037);
 			attr_dev(p1, "class", "subtitle");
-			add_location(p1, file$3, 38, 20, 1114);
+			add_location(p1, file$3, 37, 20, 1086);
 			attr_dev(div0, "class", "level-item has-text-centered column");
-			add_location(div0, file$3, 36, 16, 995);
+			add_location(div0, file$3, 35, 16, 967);
 			attr_dev(p2, "class", "heading");
-			add_location(p2, file$3, 41, 20, 1284);
+			add_location(p2, file$3, 40, 20, 1256);
 			attr_dev(p3, "class", "subtitle");
-			add_location(p3, file$3, 42, 20, 1335);
+			add_location(p3, file$3, 41, 20, 1307);
 			attr_dev(div1, "class", "level-item has-text-centered column");
-			add_location(div1, file$3, 40, 16, 1214);
+			add_location(div1, file$3, 39, 16, 1186);
 			attr_dev(p4, "class", "heading");
-			add_location(p4, file$3, 45, 20, 1491);
+			add_location(p4, file$3, 44, 20, 1480);
 			attr_dev(p5, "class", "subtitle");
-			add_location(p5, file$3, 46, 20, 1546);
+			add_location(p5, file$3, 45, 20, 1535);
 			attr_dev(div2, "class", "level-item has-text-centered column");
-			add_location(div2, file$3, 44, 16, 1421);
+			add_location(div2, file$3, 43, 16, 1410);
 			attr_dev(p6, "class", "heading");
-			add_location(p6, file$3, 49, 20, 1709);
+			add_location(p6, file$3, 48, 20, 1698);
 			attr_dev(p7, "class", "subtitle");
-			add_location(p7, file$3, 50, 20, 1757);
+			add_location(p7, file$3, 49, 20, 1746);
 			attr_dev(div3, "class", "level-item has-text-centered column");
-			add_location(div3, file$3, 48, 16, 1639);
+			add_location(div3, file$3, 47, 16, 1628);
 			attr_dev(p8, "class", "heading");
-			add_location(p8, file$3, 53, 20, 1913);
+			add_location(p8, file$3, 52, 20, 1902);
 			attr_dev(p9, "class", "subtitle");
-			add_location(p9, file$3, 54, 20, 1966);
+			add_location(p9, file$3, 53, 20, 1955);
 			attr_dev(div4, "class", "level-item has-text-centered column");
-			add_location(div4, file$3, 52, 16, 1843);
+			add_location(div4, file$3, 51, 16, 1832);
 			attr_dev(a, "href", a_href_value = "/tables/" + /*table*/ ctx[2].schemaname + "." + /*table*/ ctx[2].tablename);
 			attr_dev(a, "class", "level table svelte-12dzaya");
-			add_location(a, file$3, 35, 12, 903);
+			add_location(a, file$3, 34, 12, 875);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, a, anchor);
@@ -1751,7 +1751,7 @@ function create_each_block$1(ctx) {
 		p: function update(ctx, dirty) {
 			if (dirty & /*tables*/ 1 && t2_value !== (t2_value = /*table*/ ctx[2].schemaname + "")) set_data_dev(t2, t2_value);
 			if (dirty & /*tables*/ 1 && t4_value !== (t4_value = /*table*/ ctx[2].tablename + "")) set_data_dev(t4, t4_value);
-			if (dirty & /*tables*/ 1 && t8_value !== (t8_value = /*table*/ ctx[2].columns.length + "")) set_data_dev(t8, t8_value);
+			if (dirty & /*tables*/ 1 && t8_value !== (t8_value = (/*table*/ ctx[2].columns && /*table*/ ctx[2].columns.length) + "")) set_data_dev(t8, t8_value);
 			if (dirty & /*tables*/ 1 && t12_value !== (t12_value = (/*table*/ ctx[2].description || "None") + "")) set_data_dev(t12, t12_value);
 			if (dirty & /*tables*/ 1 && t16_value !== (t16_value = (/*table*/ ctx[2].tags || "None") + "")) set_data_dev(t16, t16_value);
 			if (dirty & /*tables*/ 1 && t20_value !== (t20_value = (/*table*/ ctx[2].last_used || "N/A") + "")) set_data_dev(t20, t20_value);
@@ -1769,7 +1769,7 @@ function create_each_block$1(ctx) {
 		block,
 		id: create_each_block$1.name,
 		type: "each",
-		source: "(35:8) {#each tables as table}",
+		source: "(34:8) {#each tables as table}",
 		ctx
 	});
 
@@ -1829,29 +1829,29 @@ function create_fragment$4(ctx) {
 			div3 = element("div");
 			document.title = "Altitude: Discover";
 			attr_dev(p0, "class", "panel-heading");
-			add_location(p0, file$3, 21, 1, 412);
+			add_location(p0, file$3, 20, 1, 384);
 			attr_dev(input, "class", "input");
 			attr_dev(input, "type", "text");
 			attr_dev(input, "placeholder", "Search");
-			add_location(input, file$3, 24, 8, 529);
+			add_location(input, file$3, 23, 8, 501);
 			attr_dev(i, "class", "fas fa-search");
 			attr_dev(i, "aria-hidden", "true");
-			add_location(i, file$3, 26, 12, 632);
+			add_location(i, file$3, 25, 12, 604);
 			attr_dev(span, "class", "icon is-left");
-			add_location(span, file$3, 25, 8, 592);
+			add_location(span, file$3, 24, 8, 564);
 			attr_dev(p1, "class", "control has-icons-left");
-			add_location(p1, file$3, 23, 8, 486);
+			add_location(p1, file$3, 22, 8, 458);
 			attr_dev(div0, "class", "panel-block");
-			add_location(div0, file$3, 22, 4, 452);
-			add_location(h3, file$3, 31, 8, 771);
+			add_location(div0, file$3, 21, 4, 424);
+			add_location(h3, file$3, 30, 8, 743);
 			attr_dev(div1, "class", "panel-block description svelte-12dzaya");
-			add_location(div1, file$3, 30, 4, 725);
+			add_location(div1, file$3, 29, 4, 697);
 			attr_dev(div2, "class", "full-height");
-			add_location(div2, file$3, 33, 1, 833);
+			add_location(div2, file$3, 32, 1, 805);
 			attr_dev(div3, "class", "level");
-			add_location(div3, file$3, 59, 1, 2082);
+			add_location(div3, file$3, 58, 1, 2071);
 			attr_dev(div4, "class", "panel svelte-12dzaya");
-			add_location(div4, file$3, 20, 0, 391);
+			add_location(div4, file$3, 19, 0, 363);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1930,7 +1930,6 @@ function instance$3($$self, $$props, $$invalidate) {
 	const get_tables_metadata = async () => {
 		const response = await fetch(`/tables.json`).then(resp => resp.json());
 		$$invalidate(0, tables = response);
-		console.log(tables);
 	};
 
 	onMount(() => {
@@ -1972,7 +1971,7 @@ function create_else_block(ctx) {
 	const block = {
 		c: function create() {
 			h1 = element("h1");
-			h1.textContent = "Hello! Try navigating to discover available data!";
+			h1.textContent = "Hello! Try navigating to discover data!";
 			attr_dev(h1, "class", "svelte-4iepu8");
 			add_location(h1, file$4, 15, 2, 274);
 		},

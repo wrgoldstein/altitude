@@ -2,8 +2,10 @@ import psycopg2
 import yaml
 import pandas as pd
 
+global cur
+
 with open('config.yml') as f:
-    conn = psycopg2.connect(yaml.load(f)['database_url'])
+    conn = psycopg2.connect(**yaml.load(f))
     cur = conn.cursor()
 
 def execute(sql):

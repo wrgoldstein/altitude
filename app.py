@@ -1,4 +1,5 @@
 import json
+import os
 from flask import jsonify 
 from flask import Flask
 from flask import render_template
@@ -37,3 +38,6 @@ def get_tables_json():
 def update_table(table_id):
     es_search.update_table_by_id(table_id, json.loads(request.data)['table'])
     return 'ok'  #TODO actually check its ok
+
+if __name__ == '__main__':
+    app.run(debug=os.getenv('FLASK_ENV') == 'dev', host='0.0.0.0')

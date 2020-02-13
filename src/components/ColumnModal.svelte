@@ -30,7 +30,9 @@
       <slot></slot>
     </section>
     <footer class="modal-card-foot">
-      <button on:click={save} class="button is-success">Save changes</button>
+      <button on:click={save} class="button is-success">
+        Save changes
+      </button>
       <button on:click={close} class="button">Cancel</button>
     </footer>
   </div>

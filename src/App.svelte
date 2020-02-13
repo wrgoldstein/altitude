@@ -13,7 +13,7 @@
 	{:else if sel == "tables"}
 		<Tables />
 	{:else}
-		<h1>Hello! Try navigating to discover available data!</h1>
+		<h1>Hello! Try navigating to discover data!</h1>
 	{/if}
 	</main>
 </Layout>

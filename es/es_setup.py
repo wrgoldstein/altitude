@@ -1,9 +1,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Document, Date, Nested, Boolean, \
     analyzer, InnerDoc, Completion, Keyword, Text, Search, Q
-from elasticsearch_dsl.connections import connections
-
-connections.create_connection(hosts=['localhost'])
 
 class ColumnTag(InnerDoc):
     tag = Text(analyzer='snowball')
@@ -35,7 +32,3 @@ class Table(Document):
 
     class Index:
         name = "tables"
-
-
-# create the mappings in elasticsearch
-Table.init()
