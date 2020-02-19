@@ -1,4 +1,4 @@
-from es.es_setup import Table, Q
+from lib.es_setup import Table, Q
 
 from elasticsearch_dsl.connections import connections
 

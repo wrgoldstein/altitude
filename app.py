@@ -5,7 +5,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 
-from es import es_search
+from lib import es_search
 
 app = Flask(__name__)
 
