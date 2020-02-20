@@ -733,7 +733,8 @@ function create_else_block(ctx) {
 	let t0_value = (/*value*/ ctx[1] || "No description yet.") + "";
 	let t0;
 	let t1;
-	let button;
+	let span;
+	let ion_icon;
 	let dispose;
 
 	const block = {
@@ -741,26 +742,27 @@ function create_else_block(ctx) {
 			div = element("div");
 			t0 = text(t0_value);
 			t1 = space();
-			button = element("button");
-			button.textContent = "edit";
+			span = element("span");
+			ion_icon = element("ion-icon");
+			set_custom_element_data(ion_icon, "name", "pencil-outline");
+			add_location(ion_icon, file$1, 42, 12, 1099);
+			attr_dev(span, "class", "icon is-medium");
+			add_location(span, file$1, 41, 8, 1037);
 			add_location(div, file$1, 40, 4, 991);
-			attr_dev(button, "class", "button");
-			add_location(button, file$1, 41, 4, 1039);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
 			append_dev(div, t0);
-			insert_dev(target, t1, anchor);
-			insert_dev(target, button, anchor);
-			dispose = listen_dev(button, "click", /*editMode*/ ctx[3], false, false, false);
+			append_dev(div, t1);
+			append_dev(div, span);
+			append_dev(span, ion_icon);
+			dispose = listen_dev(span, "click", /*editMode*/ ctx[3], false, false, false);
 		},
 		p: function update(ctx, dirty) {
 			if (dirty & /*value*/ 2 && t0_value !== (t0_value = (/*value*/ ctx[1] || "No description yet.") + "")) set_data_dev(t0, t0_value);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div);
-			if (detaching) detach_dev(t1);
-			if (detaching) detach_dev(button);
 			dispose();
 		}
 	};
@@ -18098,7 +18100,101 @@ function get_each_context(ctx, list, i) {
 	return child_ctx;
 }
 
-// (72:4) {#each (tags || []) as tag, i}
+// (79:4) {:else}
+function create_else_block_1(ctx) {
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text("No tags yet");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_else_block_1.name,
+		type: "else",
+		source: "(79:4) {:else}",
+		ctx
+	});
+
+	return block;
+}
+
+// (72:4) {#if tags && tags.length}
+function create_if_block_1(ctx) {
+	let each_1_anchor;
+	let each_value = /*tags*/ ctx[1] || [];
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+	}
+
+	const block = {
+		c: function create() {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_1_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insert_dev(target, each_1_anchor, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty & /*deleteTag, tags*/ 34) {
+				each_value = /*tags*/ ctx[1] || [];
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+					} else {
+						each_blocks[i] = create_each_block(child_ctx);
+						each_blocks[i].c();
+						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].d(1);
+				}
+
+				each_blocks.length = each_value.length;
+			}
+		},
+		d: function destroy(detaching) {
+			destroy_each(each_blocks, detaching);
+			if (detaching) detach_dev(each_1_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_1.name,
+		type: "if",
+		source: "(72:4) {#if tags && tags.length}",
+		ctx
+	});
+
+	return block;
+}
+
+// (73:8) {#each (tags || []) as tag, i}
 function create_each_block(ctx) {
 	let div;
 	let p;
@@ -18106,6 +18202,7 @@ function create_each_block(ctx) {
 	let t0;
 	let t1;
 	let a;
+	let t2;
 	let dispose;
 
 	const block = {
@@ -18115,12 +18212,13 @@ function create_each_block(ctx) {
 			t0 = text(t0_value);
 			t1 = space();
 			a = element("a");
-			add_location(p, file$2, 73, 12, 1859);
+			t2 = space();
+			add_location(p, file$2, 74, 16, 1901);
 			attr_dev(a, "href", "javascript:;");
 			attr_dev(a, "class", "delete is-small");
-			add_location(a, file$2, 74, 12, 1888);
+			add_location(a, file$2, 75, 16, 1934);
 			attr_dev(div, "class", "tag svelte-11tyqsw");
-			add_location(div, file$2, 72, 8, 1829);
+			add_location(div, file$2, 73, 12, 1867);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -18128,6 +18226,7 @@ function create_each_block(ctx) {
 			append_dev(p, t0);
 			append_dev(div, t1);
 			append_dev(div, a);
+			append_dev(div, t2);
 			dispose = listen_dev(a, "click", /*deleteTag*/ ctx[5](/*i*/ ctx[11]), false, false, false);
 		},
 		p: function update(new_ctx, dirty) {
@@ -18144,14 +18243,14 @@ function create_each_block(ctx) {
 		block,
 		id: create_each_block.name,
 		type: "each",
-		source: "(72:4) {#each (tags || []) as tag, i}",
+		source: "(73:8) {#each (tags || []) as tag, i}",
 		ctx
 	});
 
 	return block;
 }
 
-// (81:4) {:else}
+// (85:4) {:else}
 function create_else_block$1(ctx) {
 	let span;
 	let ion_icon;
@@ -18163,9 +18262,9 @@ function create_else_block$1(ctx) {
 			ion_icon = element("ion-icon");
 			set_custom_element_data(ion_icon, "name", "pencil-outline");
 			set_custom_element_data(ion_icon, "class", "svelte-11tyqsw");
-			add_location(ion_icon, file$2, 82, 12, 2238);
+			add_location(ion_icon, file$2, 86, 12, 2334);
 			attr_dev(span, "class", "icon is-medium");
-			add_location(span, file$2, 81, 8, 2176);
+			add_location(span, file$2, 85, 8, 2272);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -18183,14 +18282,14 @@ function create_else_block$1(ctx) {
 		block,
 		id: create_else_block$1.name,
 		type: "else",
-		source: "(81:4) {:else}",
+		source: "(85:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (78:4) {#if mode == 'edit'}
+// (82:4) {#if mode == 'edit'}
 function create_if_block$1(ctx) {
 	let input;
 	let t0;
@@ -18205,9 +18304,9 @@ function create_if_block$1(ctx) {
 			button.textContent = "save";
 			input.autofocus = true;
 			attr_dev(input, "placeholder", "Add a new tag");
-			add_location(input, file$2, 78, 8, 2024);
+			add_location(input, file$2, 82, 8, 2120);
 			attr_dev(button, "class", "button");
-			add_location(button, file$2, 79, 8, 2099);
+			add_location(button, file$2, 83, 8, 2195);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, input, anchor);
@@ -18238,7 +18337,7 @@ function create_if_block$1(ctx) {
 		block,
 		id: create_if_block$1.name,
 		type: "if",
-		source: "(78:4) {#if mode == 'edit'}",
+		source: "(82:4) {#if mode == 'edit'}",
 		ctx
 	});
 
@@ -18248,31 +18347,29 @@ function create_if_block$1(ctx) {
 function create_fragment$3(ctx) {
 	let div;
 	let t;
-	let each_value = /*tags*/ ctx[1] || [];
-	let each_blocks = [];
-
-	for (let i = 0; i < each_value.length; i += 1) {
-		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
-	}
 
 	function select_block_type(ctx, dirty) {
+		if (/*tags*/ ctx[1] && /*tags*/ ctx[1].length) return create_if_block_1;
+		return create_else_block_1;
+	}
+
+	let current_block_type = select_block_type(ctx);
+	let if_block0 = current_block_type(ctx);
+
+	function select_block_type_1(ctx, dirty) {
 		if (/*mode*/ ctx[0] == "edit") return create_if_block$1;
 		return create_else_block$1;
 	}
 
-	let current_block_type = select_block_type(ctx);
-	let if_block = current_block_type(ctx);
+	let current_block_type_1 = select_block_type_1(ctx);
+	let if_block1 = current_block_type_1(ctx);
 
 	const block = {
 		c: function create() {
 			div = element("div");
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].c();
-			}
-
+			if_block0.c();
 			t = space();
-			if_block.c();
+			if_block1.c();
 			add_location(div, file$2, 70, 0, 1780);
 		},
 		l: function claim(nodes) {
@@ -18280,47 +18377,32 @@ function create_fragment$3(ctx) {
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
-
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(div, null);
-			}
-
+			if_block0.m(div, null);
 			append_dev(div, t);
-			if_block.m(div, null);
+			if_block1.m(div, null);
 		},
 		p: function update(ctx, [dirty]) {
-			if (dirty & /*deleteTag, tags*/ 34) {
-				each_value = /*tags*/ ctx[1] || [];
-				let i;
+			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
+				if_block0.p(ctx, dirty);
+			} else {
+				if_block0.d(1);
+				if_block0 = current_block_type(ctx);
 
-				for (i = 0; i < each_value.length; i += 1) {
-					const child_ctx = get_each_context(ctx, each_value, i);
-
-					if (each_blocks[i]) {
-						each_blocks[i].p(child_ctx, dirty);
-					} else {
-						each_blocks[i] = create_each_block(child_ctx);
-						each_blocks[i].c();
-						each_blocks[i].m(div, t);
-					}
+				if (if_block0) {
+					if_block0.c();
+					if_block0.m(div, t);
 				}
-
-				for (; i < each_blocks.length; i += 1) {
-					each_blocks[i].d(1);
-				}
-
-				each_blocks.length = each_value.length;
 			}
 
-			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
-				if_block.p(ctx, dirty);
+			if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx)) && if_block1) {
+				if_block1.p(ctx, dirty);
 			} else {
-				if_block.d(1);
-				if_block = current_block_type(ctx);
+				if_block1.d(1);
+				if_block1 = current_block_type_1(ctx);
 
-				if (if_block) {
-					if_block.c();
-					if_block.m(div, null);
+				if (if_block1) {
+					if_block1.c();
+					if_block1.m(div, null);
 				}
 			}
 		},
@@ -18328,8 +18410,8 @@ function create_fragment$3(ctx) {
 		o: noop,
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div);
-			destroy_each(each_blocks, detaching);
-			if_block.d();
+			if_block0.d();
+			if_block1.d();
 		}
 	};
 
@@ -18914,18 +18996,18 @@ const file$4 = "src/Tables.svelte";
 
 function get_each_context$2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[2] = list[i];
+	child_ctx[5] = list[i];
 	return child_ctx;
 }
 
-// (35:8) {#each $tables as table}
+// (45:8) {#each $tables as table}
 function create_each_block$2(ctx) {
 	let a;
 	let div;
-	let t0_value = /*table*/ ctx[2].schemaname + "";
+	let t0_value = /*table*/ ctx[5].schemaname + "";
 	let t0;
 	let t1;
-	let t2_value = /*table*/ ctx[2].tablename + "";
+	let t2_value = /*table*/ ctx[5].tablename + "";
 	let t2;
 	let t3;
 	let a_href_value;
@@ -18939,9 +19021,9 @@ function create_each_block$2(ctx) {
 			t2 = text(t2_value);
 			t3 = space();
 			attr_dev(div, "class", "level table svelte-xvwvpj");
-			add_location(div, file$4, 36, 16, 1014);
-			attr_dev(a, "href", a_href_value = "/tables/" + /*table*/ ctx[2].schemaname + "." + /*table*/ ctx[2].tablename);
-			add_location(a, file$4, 35, 12, 942);
+			add_location(div, file$4, 46, 16, 1334);
+			attr_dev(a, "href", a_href_value = "/tables/" + /*table*/ ctx[5].schemaname + "." + /*table*/ ctx[5].tablename);
+			add_location(a, file$4, 45, 12, 1262);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, a, anchor);
@@ -18952,10 +19034,10 @@ function create_each_block$2(ctx) {
 			append_dev(a, t3);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty & /*$tables*/ 1 && t0_value !== (t0_value = /*table*/ ctx[2].schemaname + "")) set_data_dev(t0, t0_value);
-			if (dirty & /*$tables*/ 1 && t2_value !== (t2_value = /*table*/ ctx[2].tablename + "")) set_data_dev(t2, t2_value);
+			if (dirty & /*$tables*/ 2 && t0_value !== (t0_value = /*table*/ ctx[5].schemaname + "")) set_data_dev(t0, t0_value);
+			if (dirty & /*$tables*/ 2 && t2_value !== (t2_value = /*table*/ ctx[5].tablename + "")) set_data_dev(t2, t2_value);
 
-			if (dirty & /*$tables*/ 1 && a_href_value !== (a_href_value = "/tables/" + /*table*/ ctx[2].schemaname + "." + /*table*/ ctx[2].tablename)) {
+			if (dirty & /*$tables*/ 2 && a_href_value !== (a_href_value = "/tables/" + /*table*/ ctx[5].schemaname + "." + /*table*/ ctx[5].tablename)) {
 				attr_dev(a, "href", a_href_value);
 			}
 		},
@@ -18968,7 +19050,7 @@ function create_each_block$2(ctx) {
 		block,
 		id: create_each_block$2.name,
 		type: "each",
-		source: "(35:8) {#each $tables as table}",
+		source: "(45:8) {#each $tables as table}",
 		ctx
 	});
 
@@ -18995,7 +19077,8 @@ function create_fragment$5(ctx) {
 	let t8;
 	let t9;
 	let div3;
-	let each_value = /*$tables*/ ctx[0];
+	let dispose;
+	let each_value = /*$tables*/ ctx[1];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -19033,31 +19116,31 @@ function create_fragment$5(ctx) {
 			div3 = element("div");
 			document.title = "Altitude: Discover";
 			attr_dev(p0, "class", "panel-heading");
-			add_location(p0, file$4, 20, 1, 404);
+			add_location(p0, file$4, 30, 1, 680);
 			attr_dev(input, "class", "input");
 			attr_dev(input, "type", "text");
 			attr_dev(input, "placeholder", "Search");
-			add_location(input, file$4, 23, 8, 521);
+			add_location(input, file$4, 33, 8, 797);
 			attr_dev(i, "class", "fas fa-search");
 			attr_dev(i, "aria-hidden", "true");
-			add_location(i, file$4, 25, 12, 624);
+			add_location(i, file$4, 35, 12, 944);
 			attr_dev(span, "class", "icon is-left");
-			add_location(span, file$4, 24, 8, 584);
+			add_location(span, file$4, 34, 8, 904);
 			attr_dev(p1, "class", "control has-icons-left");
-			add_location(p1, file$4, 22, 8, 478);
+			add_location(p1, file$4, 32, 8, 754);
 			attr_dev(div0, "class", "panel-block");
-			add_location(div0, file$4, 21, 4, 444);
-			add_location(h3, file$4, 30, 8, 763);
+			add_location(div0, file$4, 31, 4, 720);
+			add_location(h3, file$4, 40, 8, 1083);
 			attr_dev(div1, "class", "panel-block description svelte-xvwvpj");
-			add_location(div1, file$4, 29, 4, 717);
+			add_location(div1, file$4, 39, 4, 1037);
 			attr_dev(p2, "class", "subtitle");
-			add_location(p2, file$4, 33, 8, 866);
+			add_location(p2, file$4, 43, 8, 1186);
 			attr_dev(div2, "class", "full-height column");
-			add_location(div2, file$4, 32, 1, 825);
+			add_location(div2, file$4, 42, 1, 1145);
 			attr_dev(div3, "class", "level");
-			add_location(div3, file$4, 42, 1, 1162);
+			add_location(div3, file$4, 52, 1, 1482);
 			attr_dev(div4, "class", "panel svelte-xvwvpj");
-			add_location(div4, file$4, 19, 0, 383);
+			add_location(div4, file$4, 29, 0, 659);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -19070,6 +19153,7 @@ function create_fragment$5(ctx) {
 			append_dev(div4, div0);
 			append_dev(div0, p1);
 			append_dev(p1, input);
+			set_input_value(input, /*search_text*/ ctx[0]);
 			append_dev(p1, t3);
 			append_dev(p1, span);
 			append_dev(span, i);
@@ -19087,10 +19171,19 @@ function create_fragment$5(ctx) {
 
 			append_dev(div4, t9);
 			append_dev(div4, div3);
+
+			dispose = [
+				listen_dev(input, "input", /*input_input_handler*/ ctx[4]),
+				listen_dev(input, "change", /*search*/ ctx[2], false, false, false)
+			];
 		},
 		p: function update(ctx, [dirty]) {
-			if (dirty & /*$tables*/ 1) {
-				each_value = /*$tables*/ ctx[0];
+			if (dirty & /*search_text*/ 1 && input.value !== /*search_text*/ ctx[0]) {
+				set_input_value(input, /*search_text*/ ctx[0]);
+			}
+
+			if (dirty & /*$tables*/ 2) {
+				each_value = /*$tables*/ ctx[1];
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
@@ -19118,6 +19211,7 @@ function create_fragment$5(ctx) {
 			if (detaching) detach_dev(t0);
 			if (detaching) detach_dev(div4);
 			destroy_each(each_blocks, detaching);
+			run_all(dispose);
 		}
 	};
 
@@ -19135,10 +19229,20 @@ function create_fragment$5(ctx) {
 function instance$4($$self, $$props, $$invalidate) {
 	let $tables;
 	validate_store(tables, "tables");
-	component_subscribe($$self, tables, $$value => $$invalidate(0, $tables = $$value));
+	component_subscribe($$self, tables, $$value => $$invalidate(1, $tables = $$value));
+	let search_text;
 
 	const get_tables_metadata = async () => {
 		const response = await fetch(`/tables.json`).then(resp => resp.json());
+		tables.set(response);
+	};
+
+	const search = async () => {
+		const response = await fetch("/search", {
+			method: "POST",
+			body: JSON.stringify({ search_text })
+		}).then(resp => resp.json());
+
 		tables.set(response);
 	};
 
@@ -19146,15 +19250,21 @@ function instance$4($$self, $$props, $$invalidate) {
 		get_tables_metadata();
 	});
 
+	function input_input_handler() {
+		search_text = this.value;
+		$$invalidate(0, search_text);
+	}
+
 	$$self.$capture_state = () => {
 		return {};
 	};
 
 	$$self.$inject_state = $$props => {
+		if ("search_text" in $$props) $$invalidate(0, search_text = $$props.search_text);
 		if ("$tables" in $$props) tables.set($tables = $$props.$tables);
 	};
 
-	return [$tables];
+	return [search_text, $tables, search, get_tables_metadata, input_input_handler];
 }
 
 class Tables extends SvelteComponentDev {
@@ -19208,7 +19318,7 @@ function create_else_block$2(ctx) {
 }
 
 // (13:27) 
-function create_if_block_1(ctx) {
+function create_if_block_1$1(ctx) {
 	let current;
 	const tables = new Tables({ $$inline: true });
 
@@ -19237,7 +19347,7 @@ function create_if_block_1(ctx) {
 
 	dispatch_dev("SvelteRegisterBlock", {
 		block,
-		id: create_if_block_1.name,
+		id: create_if_block_1$1.name,
 		type: "if",
 		source: "(13:27) ",
 		ctx
@@ -19299,7 +19409,7 @@ function create_default_slot(ctx) {
 	let current_block_type_index;
 	let if_block;
 	let current;
-	const if_block_creators = [create_if_block$3, create_if_block_1, create_else_block$2];
+	const if_block_creators = [create_if_block$3, create_if_block_1$1, create_else_block$2];
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {

@@ -4,6 +4,7 @@ EXPOSE 5000
 ENV FLASK_APP app.py
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV ENV dev
+ENV NETWORK es01
 
 # Add the PostgreSQL PGP key to verify their Debian packages.
 # It should be the same key as https://www.postgresql.org/media/keys/ACCC4CF8.asc

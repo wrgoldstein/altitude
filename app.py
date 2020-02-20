@@ -34,11 +34,15 @@ def get_tables_json():
     # return jsonify(json.load(open('tables.json', 'r')))
     return jsonify(es_search.get_tables())
 
+@app.route('/search', methods=['POST'])
+def search_tables():
+    search = json.loads(request.data)['search_text']
+    if not search:
+        return jsonify(es_search.get_tables())
+    return jsonify(es_search.search_tables(search))
+
 @app.route('/tables/<table_id>', methods=['POST'])
 def update_table(table_id):
-    print('UPDATING')
-    print(json.loads(request.data)['table'])
-    print('^^^^^^^^^^')
     es_search.update_table_by_id(table_id, json.loads(request.data)['table'])
     return 'ok'  #TODO actually check its ok
 

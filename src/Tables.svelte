@@ -3,9 +3,19 @@
 
     import { onMount } from "svelte"
 
+    let search_text
+
     const get_tables_metadata = async () => {
         const response = await fetch(`/tables.json`).then(resp => resp.json())
         tables.set(response)
+    }
+
+    const search = async () => {
+        const response = await fetch('/search', {
+                method: 'POST', 
+                body: JSON.stringify({ search_text })}
+            ).then(resp => resp.json())
+        tables.set(response)        
     }
 
     onMount(() => {
@@ -21,7 +31,7 @@
 	<p class="panel-heading">Tables</p>
     <div class="panel-block">
         <p class="control has-icons-left">
-        <input class="input" type="text" placeholder="Search">
+        <input bind:value={search_text} on:change={search} class="input" type="text" placeholder="Search">
         <span class="icon is-left">
             <i class="fas fa-search" aria-hidden="true"></i>
         </span>

@@ -43,9 +43,11 @@ docker-compose exec web python lib/es_index.py
 
 **Alternatively**, if you do not wish to develop in docker (maybe you don't have 5GB of spare memory on your laptop?) run the following in three separate terminal prompts (assuming you've [installed elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html))
 
-- `ENV=dev python app.py`
+- `NETWORK=localhost FLASK_ENV=dev python app.py`
 - `rollup -c -w`
 - `elasticsearch`
+
+or just `npm run dev` which runs all three in parallel.
 
 and in a fourth run 
 

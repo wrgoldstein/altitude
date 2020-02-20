@@ -1,15 +1,17 @@
+import os
 from elasticsearch_dsl import Document, Date, Nested, Boolean, \
     analyzer, InnerDoc, Completion, Keyword, Text, Search, Q
 from elasticsearch_dsl.connections import connections
 
-from es_setup import Table, Column, TableTag, ColumnTag
-from pg import execute
+from lib.es_setup import Table, Column, TableTag, ColumnTag
+from lib.pg import execute
+
 
 def index_all():
     # connections.create_connection(hosts=['http://es01'])
     # not sure how to tunnel to RS in container so for now
     # just assume we're connecting locally #TODO cleanup
-    connections.create_connection()
+    es = connections.create_connection(hosts=['http://{host}'.format(host=os.getenv('NETWORK'))])
     Table.init()
     print("[INFO]  Fetching tables...")
     tables = execute("""
@@ -35,7 +37,7 @@ def index_all():
           left join pg_stats p
             on p.schemaname = c.table_schema
             and p.tablename = c.table_name
-            and p.attname = c.column_name
+            aes = connections.create_connection(hosts=['http://{host}}'.format(host=os.getenv('NETWORK'))])nd p.attname = c.column_name
         where (table_name = '{table_name}' and table_schema = '{table_schema}')
     """
 

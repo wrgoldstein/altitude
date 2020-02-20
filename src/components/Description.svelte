@@ -38,6 +38,10 @@ let editMode = () => {
     <textarea bind:value={value} class="textarea" placeholder="e.g. Never use this."></textarea>
     <button on:click={saveDescription} class="button">save</button>
 {:else}
-    <div>{value || 'No description yet.'}</div>
-    <button on:click={editMode} class="button">edit</button>
+    <div>{value || 'No description yet.'}
+        <span on:click={editMode} class="icon is-medium">
+            <ion-icon name="pencil-outline"></ion-icon>
+        </span>
+    </div>
+    
 {/if}

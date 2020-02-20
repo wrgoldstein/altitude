@@ -69,12 +69,16 @@ function deleteTag(i) {
 <!-- svelte-ignore a11y-missing-attribute
                    a11y-autofocus -->
 <div>
-    {#each (tags || []) as tag, i}
-        <div class="tag">
-            <p>{tag.tag}</p>
-            <a href="javascript:;" on:click={deleteTag(i)} class="delete is-small"></a>
-        </div>
-    {/each}
+    {#if tags && tags.length}
+        {#each (tags || []) as tag, i}
+            <div class="tag">
+                <p>{tag.tag}</p>
+                <a href="javascript:;" on:click={deleteTag(i)} class="delete is-small"></a>
+            </div>
+        {/each}
+    {:else}
+        No tags yet
+    {/if}
     {#if mode == 'edit'}
         <input bind:value={new_tag} autofocus placeholder="Add a new tag">
         <button on:click={saveTags} class="button">save</button>
