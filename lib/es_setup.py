@@ -3,14 +3,14 @@ from elasticsearch_dsl import Document, Date, Nested, Boolean, \
     analyzer, InnerDoc, Completion, Keyword, Text, Search, Q
 
 class ColumnTag(InnerDoc):
-    tag = Text(analyzer='snowball')
+    tag = Text(analyzer='simple')
 
 class TableTag(InnerDoc):
-    tag = Text(analyzer='snowball')
+    tag = Text(analyzer='simple')
 
 class Column(InnerDoc):
-    columname = Text(analyzer='snowball')
-    columntype = Text(analyzer='snowball')
+    columname = Text(analyzer='simple')
+    columntype = Text(analyzer='simple')
     description = Text(analyzer='snowball')
     tags = Nested(ColumnTag)
 
@@ -22,8 +22,8 @@ class Column(InnerDoc):
     # histogram_bounds = Text()  
 
 class Table(Document):
-    schemaname = Text(analyzer='snowball')
-    tablename = Text(analyzer='snowball')
+    schemaname = Text(analyzer='simple')
+    tablename = Text(analyzer='simple')
     description = Text(analyzer='snowball')
     columns = Nested(Column)
     tags = Nested(TableTag)

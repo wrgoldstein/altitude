@@ -8,9 +8,10 @@ from lib.pg import execute
 
 
 def index_all():
-    # connections.create_connection(hosts=['http://es01'])
+    # es = connections.create_connection(hosts=['http://es01'])
     # not sure how to tunnel to RS in container so for now
     # just assume we're connecting locally #TODO cleanup
+    print(os.getenv('NETWORK'))
     es = connections.create_connection(hosts=['http://{host}'.format(host=os.getenv('NETWORK'))])
     Table.init()
     print("[INFO]  Fetching tables...")
@@ -37,7 +38,7 @@ def index_all():
           left join pg_stats p
             on p.schemaname = c.table_schema
             and p.tablename = c.table_name
-            aes = connections.create_connection(hosts=['http://{host}}'.format(host=os.getenv('NETWORK'))])nd p.attname = c.column_name
+            and p.attname = c.column_name
         where (table_name = '{table_name}' and table_schema = '{table_schema}')
     """
 

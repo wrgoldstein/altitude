@@ -54,5 +54,11 @@
 	margin: 1em;
 	overflow: scroll;
 	text-align: left;
+	scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.cell::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
 }
 </style>

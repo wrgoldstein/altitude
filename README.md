@@ -19,7 +19,14 @@ This application is designed to be as simple as possible. For now, it is [svelte
 
 - Clone the repo
 - Install [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/)
-- Add a `config.yml` at the root of the projecft with the single entry pointing to the target data warehouse in the following format:
+- Run `docker-compose up`
+- After the initial setup, once elasticsearch is online, run the following to initialize the elasticsearch mappings:
+    * Note this doesn't work for databases on locally tunneled ports (e.g. StrongDM). In that case, run the script locally pointing to localhost:9200 which is exposed from the Dockerfile.
+
+
+##### If you have a postgres database to explore
+
+Add a `config.yml` at the root of the projecft with the single entry pointing to the target data warehouse in the following format:
 
 ```yaml
 host: localhost
@@ -29,13 +36,14 @@ password: ...
 database: ...
 ```
 
-- Run `docker-compose up`
-- After the initial setup, once elasticsearch is online, run the following to initialize the elasticsearch mappings:
-    * Note this doesn't work for databases on locally tunneled ports (e.g. StrongDM). In that case, run the script locally pointing to localhost:9200 which is exposed from the Dockerfile.
+```
+docker-compose exec web python lib/es_index.py
+```
+
+##### If you just want to get set up with sample data
 
 ```
-docker-compose exec web python lib/es_setup.py
-docker-compose exec web python lib/es_index.py
+docker-compose exec web python example_indexer.py
 ```
 
 - Elasticsearch will be running on :9200 and Altitude will be running on :5000.

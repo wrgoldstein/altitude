@@ -5,6 +5,7 @@ ENV FLASK_APP app.py
 ENV FLASK_RUN_HOST 0.0.0.0
 ENV ENV dev
 ENV NETWORK es01
+ENV PYTHONPATH .
 
 # Add the PostgreSQL PGP key to verify their Debian packages.
 # It should be the same key as https://www.postgresql.org/media/keys/ACCC4CF8.asc
@@ -30,6 +31,7 @@ RUN pip install -r requirements.txt
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 COPY package.json package.json
+COPY example example
 COPY rollup.config.js rollup.config.js
 RUN npm install
 COPY . .

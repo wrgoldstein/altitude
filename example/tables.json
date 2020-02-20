@@ -1,0 +1,92 @@
+[
+	{ 
+        "table_name": "users",
+        "table_schema": "public",
+		"description": "main users table",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": [{"tag": "first tag"}, {"tag": "second tag"}]},
+			{ "column_name": "name", "column_type": "string", "tags": [{"tag": "great column"}]},
+			{ "column_name": "age", "description": "kind of impolite to ask", "column_type": "int", "tags": []}
+		]
+	},
+	{ 
+        "table_name": "vehicles",
+        "table_schema": "public",
+		"description": "where we store information on vehicles owned by users",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": [{"tag": "first tag"}, {"tag": "second tag"}]},
+			{ "column_name": "make", "column_type": "string", "tags": [{"tag": "great column"}]},
+			{ "column_name": "model", "column_type": "int", "tags": []}
+		]
+	},
+	{ 
+        "table_name": "streets",
+        "table_schema": "public",
+		"description": "technically streets AND avenues",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": []},
+			{ "column_name": "name", "column_type": "string", "tags": [{"tag": "important"}]},
+			{ "column_name": "number_equivalent", "column_type": "int", "description": "If the city were only numbered streets, which numnber would this be?", "tags": []}
+		]
+	},
+	{ 
+        "table_name": "streets",
+        "table_schema": "public",
+		"description": "technically streets AND avenues",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": []},
+			{ "column_name": "name", "column_type": "string", "tags": [{"tag": "important"}]},
+			{ "column_name": "number_equivalent", "column_type": "int", "description": "If the city were only numbered streets, which numnber would this be?", "tags": []}
+		]
+	},
+	{ 
+        "table_name": "streets",
+        "table_schema": "public",
+		"description": "technically streets AND avenues",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": []},
+			{ "column_name": "name", "column_type": "string", "tags": [{"tag": "important"}]},
+			{ "column_name": "number_equivalent", "column_type": "int", "description": "If the city were only numbered streets, which numnber would this be?", "tags": []}
+		]
+	},
+	{ 
+        "table_name": "streets",
+        "table_schema": "public",
+		"description": "technically streets AND avenues",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": []},
+			{ "column_name": "name", "column_type": "string", "tags": [{"tag": "important"}]},
+			{ "column_name": "number_equivalent", "column_type": "int", "description": "If the city were only numbered streets, which numnber would this be?", "tags": []}
+		]
+	},
+	{ 
+        "table_name": "streets",
+        "table_schema": "public",
+		"description": "technically streets AND avenues",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": []},
+			{ "column_name": "name", "column_type": "string", "tags": [{"tag": "important"}]},
+			{ "column_name": "number_equivalent", "column_type": "int", "description": "If the city were only numbered streets, which numnber would this be?", "tags": []}
+		]
+	},
+	{ 
+        "table_name": "streets",
+        "table_schema": "public",
+		"description": "technically streets AND avenues",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": []},
+			{ "column_name": "name", "column_type": "string", "tags": [{"tag": "important"}]},
+			{ "column_name": "number_equivalent", "column_type": "int", "description": "If the city were only numbered streets, which numnber would this be?", "tags": []}
+		]
+	},
+	{ 
+        "table_name": "streets",
+        "table_schema": "public",
+		"description": "technically streets AND avenues",
+		"columns": [
+			{ "column_name": "id", "column_type": "int", "tags": []},
+			{ "column_name": "name", "column_type": "string", "tags": [{"tag": "important"}]},
+			{ "column_name": "number_equivalent", "column_type": "int", "description": "If the city were only numbered streets, which numnber would this be?", "tags": []}
+		]
+	}
+]

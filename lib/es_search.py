@@ -9,7 +9,9 @@ def search_query(term):
     return {
         "query": {
             "bool": {
+                # use bool query to string together multiple matches
                 "should": [ 
+                    # nested query to search columns.tags.tag
                     {
                         "nested": {
                             "path": "columns",
@@ -20,7 +22,8 @@ def search_query(term):
                                         "match": {
                                             "columns.tags.tag": {
                                                 "query": "{term}".format(term=term),
-                                                "fuzziness": 3
+                                                "fuzziness": 3,
+                                                "boost": 5
                                             }
                                         }
                                     }
@@ -28,6 +31,7 @@ def search_query(term):
                             }
                         }
                     },
+                    # nested query to search columns.description and columns.column_name
                     {
                         "nested": {
                             "path": "columns",
@@ -39,6 +43,7 @@ def search_query(term):
                             }
                         }
                     },
+                    # match table fields
                     {
                         "multi_match": {
                             "query": "{term}".format(term=term),
@@ -50,9 +55,10 @@ def search_query(term):
         }
     }
 
-def get_tables():
-    q = Q("multi_match", query='python make', fields=['schemaname', 'tablename'])
-    return [Table.to_dict(t) for t in Table.search().execute().hits]
+def get_tables(page):
+    start = 20 * (page - 1)
+    end = 20 * page
+    return [Table.to_dict(t) for t in Table.search()[start:end].execute().hits]
 
 def search_tables(term):
     result = es.search(index='tables', body=search_query(term))

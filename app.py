@@ -31,14 +31,14 @@ def get_table_json(table_id):
 
 @app.route('/tables.json')
 def get_tables_json():
-    # return jsonify(json.load(open('tables.json', 'r')))
-    return jsonify(es_search.get_tables())
+    page = int(request.args.get("page", 1))
+    return jsonify(es_search.get_tables(page))
 
 @app.route('/search', methods=['POST'])
 def search_tables():
     search = json.loads(request.data)['search_text']
     if not search:
-        return jsonify(es_search.get_tables())
+        return jsonify(es_search.get_tables(1))
     return jsonify(es_search.search_tables(search))
 
 @app.route('/tables/<table_id>', methods=['POST'])
