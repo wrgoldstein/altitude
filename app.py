@@ -36,6 +36,9 @@ def get_tables_json():
 
 @app.route('/tables/<table_id>', methods=['POST'])
 def update_table(table_id):
+    print('UPDATING')
+    print(json.loads(request.data)['table'])
+    print('^^^^^^^^^^')
     es_search.update_table_by_id(table_id, json.loads(request.data)['table'])
     return 'ok'  #TODO actually check its ok
 

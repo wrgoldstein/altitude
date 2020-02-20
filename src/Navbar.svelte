@@ -1,7 +1,9 @@
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-      <p class="navbar-item logo">logo corp</p>
+        <span class="icon is-large">
+            <ion-icon name="airplane-outline"></ion-icon>
+        </span>
 
 
     <a href="#" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -20,25 +22,17 @@
       <a href="/tables" class="navbar-item">
         Tables
       </a>
-
-      <a href="" class="navbar-item">
-        Queries
-      </a>
-
-      <a href="" class="navbar-item">
-        Settings
-      </a>
     </div>
 
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a href="" class="button is-primary">
+          <!-- <a href="" class="button is-primary">
             <strong>Sign up</strong>
           </a>
           <a href="" class="button is-light">
             Log in
-          </a>
+          </a> -->
         </div>
       </div>
     </div>

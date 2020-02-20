@@ -34,11 +34,25 @@ database: ...
     * Note this doesn't work for databases on locally tunneled ports (e.g. StrongDM). In that case, run the script locally pointing to localhost:9200 which is exposed from the Dockerfile.
 
 ```
-docker-compose exec web python es/es_setup.py
+docker-compose exec web python lib/es_setup.py
+docker-compose exec web python lib/es_index.py
 ```
 
 - Elasticsearch will be running on :9200 and Altitude will be running on :5000.
     * Note elasticsearch with docker is quite memory hungry-- if you get cryptic errors, try reducing to one node or increasing the memory allocated to docker.
+
+**Alternatively**, if you do not wish to develop in docker (maybe you don't have 5GB of spare memory on your laptop?) run the following in three separate terminal prompts (assuming you've [installed elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html))
+
+- `ENV=dev python app.py`
+- `rollup -c -w`
+- `elasticsearch`
+
+and in a fourth run 
+
+```
+python lib/es_setup.py
+python lib/es_index.py
+```
 
 ### Tests
 

@@ -2,8 +2,8 @@ from lib.es_setup import Table, Q
 
 from elasticsearch_dsl.connections import connections
 
-connections.create_connection(hosts=['http://es01'])
-
+# connections.create_connection(hosts=['http://es01'])
+connections.create_connection()
 
 def get_tables():
     q = Q("multi_match", query='python make', fields=['schemaname', 'tablename'])
