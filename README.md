@@ -13,7 +13,7 @@
 
 ### Architecture
 
-This application is designed to be as simple as possible. For now, it is [svelte](https://svelte.dev/) on the front end and [flask](https://flask.palletsprojects.com/en/1.1.x/) on the back end. It currently has no database connections, although it will eventually have two (one to store data related to this project and one source connection to get data from Redshift).
+This application is designed to be as simple as possible. It is [svelte](https://svelte.dev/) on the front end and [flask](https://flask.palletsprojects.com/en/1.1.x/) on the back end, along with [elasticsearch](https://www.elastic.co/) for searching and persisting metadata. It currently allows for connecting to Redshift or Postgres databases.
 
 ### Development
 
