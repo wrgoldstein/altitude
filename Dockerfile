@@ -30,6 +30,7 @@ RUN pip install -r requirements.txt
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update && apt-get install -y nodejs
+
 COPY package.json package.json
 COPY example example
 COPY rollup.config.js rollup.config.js

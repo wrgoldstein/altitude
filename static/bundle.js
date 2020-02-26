@@ -18099,7 +18099,7 @@ function get_each_context(ctx, list, i) {
 	return child_ctx;
 }
 
-// (79:4) {:else}
+// (81:4) {:else}
 function create_else_block_1(ctx) {
 	let t;
 
@@ -18120,14 +18120,14 @@ function create_else_block_1(ctx) {
 		block,
 		id: create_else_block_1.name,
 		type: "else",
-		source: "(79:4) {:else}",
+		source: "(81:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (72:4) {#if tags && tags.length}
+// (74:4) {#if tags && tags.length}
 function create_if_block_1(ctx) {
 	let each_1_anchor;
 	let each_value = /*tags*/ ctx[1] || [];
@@ -18186,14 +18186,14 @@ function create_if_block_1(ctx) {
 		block,
 		id: create_if_block_1.name,
 		type: "if",
-		source: "(72:4) {#if tags && tags.length}",
+		source: "(74:4) {#if tags && tags.length}",
 		ctx
 	});
 
 	return block;
 }
 
-// (73:8) {#each (tags || []) as tag, i}
+// (75:8) {#each (tags || []) as tag, i}
 function create_each_block(ctx) {
 	let div;
 	let p;
@@ -18212,12 +18212,11 @@ function create_each_block(ctx) {
 			t1 = space();
 			a = element("a");
 			t2 = space();
-			add_location(p, file$2, 74, 16, 1901);
-			attr_dev(a, "href", "javascript:;");
+			add_location(p, file$2, 76, 16, 1942);
 			attr_dev(a, "class", "delete is-small");
-			add_location(a, file$2, 75, 16, 1934);
+			add_location(a, file$2, 77, 16, 1975);
 			attr_dev(div, "class", "tag svelte-11tyqsw");
-			add_location(div, file$2, 73, 12, 1867);
+			add_location(div, file$2, 75, 12, 1908);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -18242,14 +18241,14 @@ function create_each_block(ctx) {
 		block,
 		id: create_each_block.name,
 		type: "each",
-		source: "(73:8) {#each (tags || []) as tag, i}",
+		source: "(75:8) {#each (tags || []) as tag, i}",
 		ctx
 	});
 
 	return block;
 }
 
-// (85:4) {:else}
+// (87:4) {:else}
 function create_else_block$1(ctx) {
 	let span;
 	let ion_icon;
@@ -18261,9 +18260,9 @@ function create_else_block$1(ctx) {
 			ion_icon = element("ion-icon");
 			set_custom_element_data(ion_icon, "name", "pencil-outline");
 			set_custom_element_data(ion_icon, "class", "svelte-11tyqsw");
-			add_location(ion_icon, file$2, 86, 12, 2334);
+			add_location(ion_icon, file$2, 88, 12, 2355);
 			attr_dev(span, "class", "icon is-medium");
-			add_location(span, file$2, 85, 8, 2272);
+			add_location(span, file$2, 87, 8, 2293);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -18281,14 +18280,14 @@ function create_else_block$1(ctx) {
 		block,
 		id: create_else_block$1.name,
 		type: "else",
-		source: "(85:4) {:else}",
+		source: "(87:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (82:4) {#if mode == 'edit'}
+// (84:4) {#if mode == 'edit'}
 function create_if_block$1(ctx) {
 	let input;
 	let t0;
@@ -18303,9 +18302,9 @@ function create_if_block$1(ctx) {
 			button.textContent = "save";
 			input.autofocus = true;
 			attr_dev(input, "placeholder", "Add a new tag");
-			add_location(input, file$2, 82, 8, 2120);
+			add_location(input, file$2, 84, 8, 2141);
 			attr_dev(button, "class", "button");
-			add_location(button, file$2, 83, 8, 2195);
+			add_location(button, file$2, 85, 8, 2216);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, input, anchor);
@@ -18336,7 +18335,7 @@ function create_if_block$1(ctx) {
 		block,
 		id: create_if_block$1.name,
 		type: "if",
-		source: "(82:4) {#if mode == 'edit'}",
+		source: "(84:4) {#if mode == 'edit'}",
 		ctx
 	});
 
@@ -18369,7 +18368,7 @@ function create_fragment$3(ctx) {
 			if_block0.c();
 			t = space();
 			if_block1.c();
-			add_location(div, file$2, 70, 0, 1780);
+			add_location(div, file$2, 72, 0, 1821);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

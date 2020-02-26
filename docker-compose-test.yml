@@ -1,0 +1,26 @@
+version: '2.2'
+services:
+  web:
+    build: .
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/code
+    networks:
+      - elastic
+    command: "dev"
+  
+  test:
+    build:
+      context: .
+      dockerfile: "Dockerfile.test"
+    depends_on:
+      - web
+    networks:
+      - elastic
+    environment:
+      - CYPRESS_NETWORK=web
+
+networks:
+  elastic:
+    driver: bridge

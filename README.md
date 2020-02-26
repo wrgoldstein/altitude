@@ -66,7 +66,16 @@ python lib/es_index.py
 
 ### Tests
 
-No tests yet.
+This application uses [cypress](https://www.cypress.io/) for integration testing. To run the tests in a headless docker container, run:
+
+```
+    docker-compose -f docker-compose-test.yml up --exit-code-from test
+```
+
+It will be faster when **writing new tests** to iterate by running cypress locally.
+
+1. Run the development server in one terminal (`npm run dev`)
+2. Open cypress with `node_modules/.bin/cypress open` and follow the [getting started docs](https://docs.cypress.io/guides/getting-started/testing-your-app.html) for running individual tests.
 
 ### Deployment
 

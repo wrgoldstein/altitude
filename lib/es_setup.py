@@ -1,5 +1,5 @@
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Document, Date, Nested, Boolean, \
+from elasticsearch_dsl import Document, Date, Nested, Integer, Boolean, \
     analyzer, InnerDoc, Completion, Keyword, Text, Search, Q
 
 class ColumnTag(InnerDoc):
@@ -19,7 +19,10 @@ class Column(InnerDoc):
     # they're noncritical.
     #
     # most_column_vals = Text()
-    # histogram_bounds = Text()  
+    # histogram_bounds = Text()
+
+class Usage(InnerDoc):
+    recent_queries = Integer()
 
 class Table(Document):
     schemaname = Text(analyzer='simple')
@@ -27,7 +30,7 @@ class Table(Document):
     description = Text(analyzer='snowball')
     columns = Nested(Column)
     tags = Nested(TableTag)
-
+    usage = Nested(Usage)
     last_used = Text()
 
     class Index:

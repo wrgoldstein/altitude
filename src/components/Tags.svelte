@@ -67,13 +67,15 @@ function deleteTag(i) {
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute
+                   a11y-missing-content
                    a11y-autofocus -->
+
 <div>
     {#if tags && tags.length}
         {#each (tags || []) as tag, i}
             <div class="tag">
                 <p>{tag.tag}</p>
-                <a href="javascript:;" on:click={deleteTag(i)} class="delete is-small"></a>
+                <a on:click={deleteTag(i)} class="delete is-small"></a>
             </div>
         {/each}
     {:else}
