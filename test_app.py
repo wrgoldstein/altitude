@@ -1,19 +1,22 @@
+import os
 import requests
 import unittest
 from unittest.mock import MagicMock
 
 import app
+
+import time
+from elasticsearch_dsl.connections import connections
 import example.es_index
 
 IndexName = "test_tables"
 
-class Index:
-    "Overwrite Elasticsearch model index with this one"
-    name = IndexName
-
-app.es_search.Table.Index = Index
+example.es_index.Table._index._name = IndexName
 
 if __name__ == "__main__":
+    host = os.getenv('NETWORK') or 'localhost'
+    es = connections.create_connection(hosts=['http://{host}'.format(host=host)])
+    
     try:
         # index and then run server
         example.es_index.index_all()

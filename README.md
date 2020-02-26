@@ -15,18 +15,25 @@
 
 This application is designed to be as simple as possible. It is [svelte](https://svelte.dev/) on the front end and [flask](https://flask.palletsprojects.com/en/1.1.x/) on the back end, along with [elasticsearch](https://www.elastic.co/) for searching and persisting metadata. It currently allows for connecting to Redshift or Postgres databases.
 
-### Development
+### Getting started
 
 - Clone the repo
 - Install [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/)
 - Run `docker-compose up`
-- After the initial setup, once elasticsearch is online, run the following to initialize the elasticsearch mappings:
-    * Note this doesn't work for databases on locally tunneled ports (e.g. StrongDM). In that case, run the script locally pointing to localhost:9200 which is exposed from the Dockerfile.
 
+At this point you're up and running!
 
-##### If you have a postgres database to explore
+#### Getting data
 
-Add a `config.yml` at the root of the projecft with the single entry pointing to the target data warehouse in the following format:
+If you want to import some sample data to get started, run:
+
+```
+docker-compose exec web python example_indexer.py
+```
+
+If instead you have a postgres database to explore:
+
+Add a `config.yml` at the root of the project with the single entry pointing to the target data warehouse in the following format:
 
 ```yaml
 host: localhost
@@ -40,31 +47,22 @@ database: ...
 docker-compose exec web python lib/es_index.py
 ```
 
-##### If you just want to get set up with sample data
+### Local development
+
+If you do not wish to develop in docker (maybe you don't have enough spare memory on your laptop?) run the following (assuming you've [installed elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html))
 
 ```
-docker-compose exec web python example_indexer.py
+npm run dev
 ```
 
-- Elasticsearch will be running on :9200 and Altitude will be running on :5000.
-    * Note elasticsearch with docker is quite memory hungry-- if you get cryptic errors, try reducing to one node or increasing the memory allocated to docker.
-
-**Alternatively**, if you do not wish to develop in docker (maybe you don't have 5GB of spare memory on your laptop?) run the following in three separate terminal prompts (assuming you've [installed elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html))
-
+Which runs the following in parallel:
 - `NETWORK=localhost FLASK_ENV=dev python app.py`
 - `rollup -c -w`
 - `elasticsearch`
 
-or just `npm run dev` which runs all three in parallel.
+Then follow the above directions for importing data.
 
-and in a fourth run 
-
-```
-python lib/es_setup.py
-python lib/es_index.py
-```
-
-### Tests
+### Running tests
 
 This application uses [cypress](https://www.cypress.io/) for integration testing. To run the tests in a headless docker container, run:
 

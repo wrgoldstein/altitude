@@ -4,13 +4,10 @@
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
-    "dev": "NETWORK=localhost npm-run-all --parallel watch serve",
-    "serve": "FLASK_ENV=dev python app.py",
-    "prod": "python app.py",
-    "search": "elasticsearch",
-    "flask-test": "python test_app.py",
-    "test-server": "npm-run-all --parallel search flask-test",
-    "test": "node_modules/.bin/cypress run"
+    "dev": "npm-run-all --parallel watch dev-server",
+    "dev-server": "FLASK_ENV=dev python app.py",
+    "test-server": "python test_app.py",
+    "tests": "node_modules/.bin/cypress run"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.0",

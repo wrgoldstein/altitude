@@ -11,8 +11,8 @@ def index_all():
     # es = connections.create_connection(hosts=['http://es01'])
     # not sure how to tunnel to RS in container so for now
     # just assume we're connecting locally #TODO cleanup
-    print(os.getenv('NETWORK'))
-    es = connections.create_connection(hosts=['http://{host}'.format(host=os.getenv('NETWORK'))])
+    host = os.getenv('NETWORK') or 'localhost'
+    es = connections.create_connection(hosts=['http://{host}'.format(host=host)])
     Table.init()
     print("[INFO]  Fetching tables...")
     tables = execute("""

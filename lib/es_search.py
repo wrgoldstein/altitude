@@ -3,7 +3,8 @@ from lib.es_setup import Table, Q
 
 from elasticsearch_dsl.connections import connections
 
-es = connections.create_connection(hosts=['http://{host}'.format(host=os.getenv('NETWORK'))])
+host = os.getenv('NETWORK') or 'localhost'
+es = connections.create_connection(hosts=['http://{host}'.format(host=host)])
 
 def search_query(term):
     return {

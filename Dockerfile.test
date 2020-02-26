@@ -3,6 +3,7 @@ COPY package.json .
 ENV CYPRESS_NETWORK web
 RUN npm install
 
+COPY wait-for-it.sh .
 COPY cypress cypress
 COPY cypress.json .
 CMD $(npm bin)/cypress run

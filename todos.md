@@ -50,3 +50,30 @@ I'm trying to have either path be legitimate: run everything through docker, or 
 2. in docker [ ]
     - in one pane run `docker-compose -f docker-compose.test.yml up`
     - which will run the flask app in dev mode and then run a small container with cypress in it. Try https://stackoverflow.com/questions/39996732/docker-compose-disable-output-on-one-of-containers to silence the non cypress container, the output of which shouldn't matter (unless you're developing).
+
+
+
+1. run elasticsearch
+2. run python test server
+3. run test index
+4. run cypress tests
+5. delete test elasticsearch index
+6. shut down python test server
+
+
+Where was I? Trying to run tests in docker. The issue is the docker container for elasticsearch says its ready, and then needs 30 more seconds to spin up. Turns out this is a common problem!
+
+Dockerfile
+
+FROM python:2-onbuild
+RUN ["pip", "install", "pika"]
+ADD start.sh /start.sh
+CMD ["/start.sh"]
+start.sh
+
+#!/bin/bash
+while ! nc -z rabbitmq 5672; do sleep 3; done
+python rabbit.py
+Probably you need to install netcat in your Dockerfile as well. I do not know what is pre-installed on the python image.
+
+Also look at https://github.com/vishnubob/wait-for-it

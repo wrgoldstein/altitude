@@ -1,13 +1,12 @@
 /// <reference types="Cypress" />
 
 describe('Test Tables component', function() {
-  it('clicking "type" navigates to a new url', function() {
-    cy.debug()
-    cy.visit(`http://${Cypress.env('NETWORK')}:5000`)
-
+  it('clicking "tables" navigates to a new url', function() {
+    const network = Cypress.env('NETWORK') || 'localhost'
+    cy.visit(`http://${network}:5000`)
     cy.contains('Tables').click()
 
-    // // Should be on a new URL which includes '/commands/actions'
+    // Should be on a new URL which includes '/tables'
     cy.url().should('include', '/tables')
   })
 })

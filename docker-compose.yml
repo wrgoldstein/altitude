@@ -9,6 +9,8 @@ services:
     networks:
       - elastic
     command: "${ENV}"
+    environment:
+      - NETWORK=es01
 
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2

@@ -2,9 +2,10 @@ import json
 import sys, os
 from lib.es_setup import Table, Column, TableTag, ColumnTag
 
-
 from elasticsearch_dsl.connections import connections
-es = connections.create_connection(hosts=['http://{host}'.format(host=os.getenv('NETWORK'))])
+host = os.getenv('NETWORK') or 'localhost'
+
+es = connections.create_connection(hosts=['http://{host}'.format(host=host)])
 
 with open('example/tables.json', 'r') as f:
     tables = json.load(f)

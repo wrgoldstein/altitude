@@ -25,17 +25,24 @@ RUN wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/
 RUN dpkg -i libssl1.0.0_1.0.1t-1+deb8u12_amd64.deb
 RUN apt-get update && apt-get install -y software-properties-common postgresql-9.3 postgresql-client-9.3 postgresql-contrib-9.3
 
+# Python libraries
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
+# Install Node
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
 RUN apt-get update && apt-get install -y nodejs
+
+# Cypress dependencies
+RUN apt-get update && apt-get install -y libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
 COPY package.json package.json
 COPY example example
 COPY rollup.config.js rollup.config.js
+
+# NPM packages
 RUN npm install
+
 COPY . .
 ADD src src
-ENTRYPOINT ["npm", "run"]
-CMD ["dev"]
+CMD ["npm", "run", "dev"]
