@@ -70,7 +70,7 @@ function deleteTag(i) {
                    a11y-missing-content
                    a11y-autofocus -->
 
-<div>
+<div class="tags">
     {#if tags && tags.length}
         {#each (tags || []) as tag, i}
             <div class="tag">

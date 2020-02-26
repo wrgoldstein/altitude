@@ -3,6 +3,7 @@ import { table } from "../stores.js"
 export let column
 
 let mode = 'view'
+let identifier = column ? `column-${column.column_name}` : `table-${$table.tablename}`
 let value = column ? column.description : $table.description
 
 let saveDescription = () => {
@@ -34,14 +35,14 @@ let editMode = () => {
 }
 </script>
 
-{#if mode == 'edit'}
-    <textarea bind:value={value} class="textarea" placeholder="e.g. Never use this."></textarea>
-    <button on:click={saveDescription} class="button">save</button>
-{:else}
-    <div>{value || 'No description yet.'}
-        <span on:click={editMode} class="icon is-medium">
+<span class="description-{identifier}">
+    {#if mode == 'edit'}
+        <textarea bind:value={value} class="textarea" placeholder="e.g. Never use this."></textarea>
+        <button on:click={saveDescription} class="button">save</button>
+    {:else}
+        {value || 'No description yet.'}
+        <span on:click={editMode} class="icon is-medium description-edit">
             <ion-icon name="pencil-outline"></ion-icon>
         </span>
-    </div>
-    
-{/if}
+    {/if}
+</span>
